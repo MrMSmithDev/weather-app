@@ -15,3 +15,15 @@
     font-style: normal;
     font-weight: normal;
 }
+
+body {
+    min-height: 100vh; 
+}
+
+.layout-wrapper {
+    display: flex;    
+}
+
+nav {
+    width: 200px;
+}
