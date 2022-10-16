@@ -10,8 +10,8 @@
 
 @font-face {
     font-family: "moonless";
-    src: url('../webfonts/moonlesssc-regular_1-webfont.woff2') format('woff2'),
-         url('../webfonts/moonlesssc-regular_1-webfont.woff') format('woff');
+    src: url('../assets/webfonts/moonlesssc-regular_1-webfont.woff2') format('woff2'),
+         url('../assets/webfonts/moonlesssc-regular_1-webfont.woff') format('woff');
     font-style: normal;
     font-weight: normal;
 }
