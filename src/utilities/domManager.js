@@ -1,5 +1,11 @@
 /* eslint-disable no-unused-vars */
 const domManager = (() => {
+  const imageLibrary = {
+    sunny: '../assets/images/sunny.jpeg',
+    clouds: '../assets/images/cloud.jpg',
+    rain: '../assets/images/rain.jpeg',
+    storm: '../assets/images/storm.jpeg',
+  }
 
   // Utility functions
 
@@ -108,6 +114,13 @@ const domManager = (() => {
     return navElement.appendChildren(header, locationSearch)
   }
 
+  function createStartupPage() {
+    const startupContainer = createClassElement('div', 'startup-container')
+    const startupImage = createClassElement('img', 'startup-image')
+    const startupHeader = createTextElement('h1', 'Whatever\'s the Weather')
+    const startupPara = createTextElement('p', '')
+  }
+
   function createForecastContainer(weatherInfo) {
     const forecastContainer = createClassElement('div', 'forecast-container')
     return forecastContainer.appendChildren(
@@ -116,11 +129,25 @@ const domManager = (() => {
     )
   }
 
-  // Return functions
-
   function showDashboard() {
     layoutWrapper.appendChild(createNavElement())
     layoutWrapper.appendChild(createMainElement())
+  }
+
+  function showStartupMain() {
+    let main = document.querySelector('main')
+    if (!main) {
+      main = document.createElement('main')
+      layoutWrapper.appendChild(main)
+    }
+    main.appendChild(createStartupPage())
+  }
+
+  // Return functions
+
+  function initHome() {
+    showDashboard()
+    showStartupMain()
   }
 
   function showCurrentForecast(weatherInfo) {
@@ -132,20 +159,12 @@ const domManager = (() => {
     main.appendChild(createForecastContainer(weatherInfo)) // !! Pass in weather information here !!
   }
 
-  function showStartupMain() {
-    let main = document.querySelector('main')
-    if (!main) {
-      main = document.createElement('main')
-      layoutWrapper.appendChild(main)
-    }
-  }
-
   function removeMain() {
     document.querySelector('main').remove()
   }
 
   return {
-    showDashboard,
+    initHome,
     showCurrentForecast,
     removeMain,
   }
