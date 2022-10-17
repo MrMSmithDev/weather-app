@@ -1,4 +1,5 @@
 const apiManager = (() => {
+  let units = 'imperial'
   const apiKey = '43df7ed317e5646ac516d5c73acdd3fc'
 
   async function getLocationData(searchTerm) {
@@ -14,10 +15,10 @@ const apiManager = (() => {
     } 
   }
 
-  async function getWeatherData(location) {
+  async function getWeatherData(lat, lon) {
     try {
       const response = await fetch(
-        `API CALL${location}`,
+        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`,
         {mode: 'cors'},
       )
       const responseData = await response.json()
@@ -27,14 +28,25 @@ const apiManager = (() => {
     }
   }
 
+  // Return functions
+
   async function makeLocationSearch(location) {
     const coordinatesData = await getLocationData(location)
     const weatherData = await getWeatherData(coordinatesData)
     return weatherData
   }
 
+  function changeApiUnits() {
+    if (units === 'imperial') {
+      units = 'metric'
+    } else {
+      units = 'imperial'
+    }
+  }
+
   return {
-    makeLocationSearch,  
+    makeLocationSearch,
+    changeApiUnits,
   }
 
 })()
