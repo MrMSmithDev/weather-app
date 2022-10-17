@@ -1,4 +1,6 @@
 import './styles/style.css'
+import api from './utilities/apiManager'
 import dom from './utilities/domManager'
 
-console.log(dom)
+dom.showDashboard()
+api.makeLocationSearch()
