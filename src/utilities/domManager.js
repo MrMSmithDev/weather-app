@@ -15,13 +15,13 @@ const domManager = (() => {
     return newElement
   }
 
-  function appendChildren(mainElement, ...elementsToAppend) {
-    elementsToAppend.forEach((element) => mainElement.appendChild(element))
-    return mainElement
+  HTMLElement.prototype.appendChildren = function appendChildren(...elementsToAppend) {
+    elementsToAppend.forEach((element) => this.appendChild(element))
+    return this
   }
 
-  function setAttributes(mainElement, attributeObject) {
-    Object.keys(attributeObject).forEach((key) => mainElement.setAttribute(key, attributeObject[key]))
+  HTMLElement.prototype.setAttributes = function setAttributes(attributeObject) {
+    Object.keys(attributeObject).forEach((key) => this.setAttribute(key, attributeObject[key]))
   }
 
   // Dom creation functions
@@ -42,7 +42,7 @@ const domManager = (() => {
     const label = document.createElement('label')
     label.setAttribute('for', 'location-input')
     const locationInput = document.createElement('input')
-    setAttributes(locationInput, {
+    locationInput.setAttributes({
       'type': 'text',
       'name': 'location-input',
       'id': 'location-input',
@@ -50,7 +50,7 @@ const domManager = (() => {
     })
     label.appendChild(locationInput)
     const searchButton = createTextElement('button', 'search')
-    appendChildren(fieldset, label, searchButton)
+    fieldset.appendChildren(label, searchButton)
     formElement.appendChild(fieldset)
     return formElement
   }
@@ -67,8 +67,7 @@ const domManager = (() => {
     const paraTemperature = createClassElement('p', 'para-temp')
     paraTemperature.textContent = temperature
 
-    return appendChildren(
-      forecastImage,
+    return forecastImage.appendChildren(
       wrapperDiv,
       paraLocation,
       paraWeather,
@@ -85,8 +84,7 @@ const domManager = (() => {
         paraWeather.textContent = day.weatherType
         const paraTemperature = createClassElement('p', 'para-temperature')
         paraTemperature.textContent = day.temperature
-        appendChildren(card,
-          cardImage,
+        cardImage.appendChildren(card,
           paraWeather,
           paraTemperature,
         )
@@ -107,12 +105,12 @@ const domManager = (() => {
     const navElement = document.createElement('nav')
     const header = createHeaderElement()
     const locationSearch = createSearchInput()
-    return appendChildren(navElement, header, locationSearch)
+    return navElement.appendChildren(header, locationSearch)
   }
 
   function createForecastContainer(weatherInfo) {
     const forecastContainer = createClassElement('div', 'forecast-container')
-    return appendChildren(forecastContainer,
+    return forecastContainer.appendChildren(
       createMainForecast(weatherInfo), // Pass in weather info for current day (Separated ))
       createCardDeck(weatherInfo), // Pass in weather info object for days 2 - 7
     )
@@ -132,6 +130,14 @@ const domManager = (() => {
       layoutWrapper.appendChild(main)
     }
     main.appendChild(createForecastContainer(weatherInfo)) // !! Pass in weather information here !!
+  }
+
+  function showStartupMain() {
+    let main = document.querySelector('main')
+    if (!main) {
+      main = document.createElement('main')
+      layoutWrapper.appendChild(main)
+    }
   }
 
   function removeMain() {
