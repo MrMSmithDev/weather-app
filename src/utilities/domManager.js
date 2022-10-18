@@ -163,6 +163,13 @@ const domManager = (() => {
     main.appendChild(createForecastContainer(weatherInfo)) // !! Pass in weather information here !!
   }
 
+  function updateUnitText(newUnits) {
+    const unitButtons = document.querySelectorAll('.unit-button')
+    unitButtons.forEach(button => {
+      button.textContent = newUnits
+    })
+  }
+
   function removeMain() {
     document.querySelector('main').remove()
   }
@@ -170,6 +177,7 @@ const domManager = (() => {
   return {
     initHome,
     showCurrentForecast,
+    updateUnitText,
     removeMain,
   }
 
