@@ -27,18 +27,24 @@ body {
 }
 
 main {
-    background-color: #FFECEF;
+    background-image: url('../assets/images/background.jpg');
+    background-position: center;
+    background-size: cover;
+    padding: 40px;
     width: 100%;
 }
 
 /* Nav section */
 
 nav {
-    /* background-color: #98A8F8; */
     background-color: #B73E3E;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    gap: 10px;
     min-height: 100vh;
     min-width: 350px;
+    padding: 10px;
 }
 
 header {
@@ -46,14 +52,6 @@ header {
     font-size: 1.8rem;
     padding: 10px;
     place-items: center;
-}
-
-nav fieldset {
-    border: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 10px;
 }
 
 input[type=text] {
@@ -64,7 +62,7 @@ input[type=text] {
     width: 100%;
 }
 
-fieldset .button-container {
+.button-container {
     display: flex;
     gap: 10px;
 }
@@ -101,18 +99,71 @@ button:hover {
     width: 100%;
 }
 
-.startup-container .startup-image {
-    align-items: center;
-    background-image: url('../assets/images/background.jpg');
+.startup-container .search-button {
+    margin-left: 10px;
+}
+
+.startup-container input[type=text] {
+    width: 350px;
+}
+
+/* Forecast section */
+
+.current-forecast-container {
+    background-color: rgba(255, 185, 104, 1);
+    border-radius: 10px;
+    display: flex;
+    height: 500px;
+}
+
+.current-forecast-image {
     background-position: center;
     background-size: cover;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     height: 100%;
+    width: 45%;
+}
+
+.current-forecast-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 2rem;
+    padding: 10px;
+}
+
+.current-forecast-info .para-location {
+    font-size: 3rem;
+}
+
+/* Loading */
+
+@keyframes rotating-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    99% {
+        transform: rotate(359deg)
+    }
+}
+
+.loading-container {
+    background-color: rgba(100, 100, 100, 0.5);
+    border-radius: 10px;
+    display: grid;
+    height: 100%;
+    place-items: center;
     width: 100%;
 }
 
-.startup-image input[type=text] {
-    width: 350px;
+.loading-icon {
+    background-image: url('../assets/images/loading-icon.png');
+    background-position: center;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+
+    animation: rotating-animation 2s infinite linear;
 }
+
+/* Modals */
