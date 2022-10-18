@@ -1,60 +1,139 @@
+import { addDays } from 'date-fns'
+
 const apiManager = (() => {
   let units = 'metric'
   const apiKey = '43df7ed317e5646ac516d5c73acdd3fc'
 
-  const noNumRegEx = /[0-9+]$/
+  const noNumRegEx = /\d/
   const lonLatRegEx = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
   const usZipRegEx = /\^[0-9]{5}(?:-[0-9]{4})?$/
   const gbPostRegEx = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i
 
   function checkSearchType(searchTerm) {
     if (!searchTerm.match(noNumRegEx)) return 'locationName'
-    if (searchTerm.match(usZipRegEx) || searchTerm.match(gbPostRegEx)) return 'postcode'
+    if (searchTerm.match(gbPostRegEx)) return 'postcodeGB'
+    if (searchTerm.match(usZipRegEx)) return 'postcodeUS'
     if (searchTerm.match(lonLatRegEx)) return 'lonLat'
     return 'unknown'
   }
 
-  async function getLocationData(searchTerm) {
+  function createSearchQuery(searchTerm, searchType) {
     let searchQuery
-    const searchType = checkSearchType(searchTerm)
 
-    if (searchType === 'LocationName' || searchType === 'unknown') searchQuery = `direct?q=${searchTerm}`
-    if (searchType === 'postcode') searchQuery = `zip?zip=${searchTerm}`
+    if (searchType === 'locationName' || searchType === 'unknown') searchQuery = `direct?q=${searchTerm}`
+    if (searchType === 'postcodeGB') searchQuery = `zip?zip=${searchTerm},GB`
+    if (searchType === 'postcodeUS') searchQuery = `zip?zip=${searchTerm},US`
     if (searchType === 'lonLat') {
       const splitSearch = searchTerm.replace(/\s/, '').split(',')
       searchQuery = `reverse?lat=${splitSearch[0]}&lon=${splitSearch[1]}`
     }
+    return searchQuery
+  }
 
-    try {
-      const response = await fetch(
-        `http://api.openweathermap.org/geo/1.0/${searchQuery}&limit=1&appid=${apiKey}`,
-        {mode: 'cors'},
-      )
-      const responseData = await response.json()
-      console.log(responseData)
-    } catch (err) {
-      console.log(err)
-    } 
+  function createDateArray() {
+    const dateArr = []
+    const today = new Date()
+
+    for (let i = 0; i < 7; i += 1) {
+      const simulatedDate =  addDays(today, i)
+      dateArr.push(simulatedDate)
+    }
+    return dateArr
+  }
+
+  async function getLocationData(searchTerm) {
+    const searchType = checkSearchType(searchTerm)
+    const searchQuery = createSearchQuery(searchTerm, searchType)
+
+    const response = await fetch(
+      `http://api.openweathermap.org/geo/1.0/${searchQuery}&limit=1&appid=${apiKey}`,
+      {mode: 'cors'},
+    )
+    const data = await response.json()
+
+    // If the search is for postcode, 
+    if (searchType === 'postcodeGB' || searchType === 'postcodeUS') {
+      return {
+        name: data.name,
+        lat: data.lat,
+        lon: data.lon
+      }
+    }
+    return {
+      name: data[0].name,
+      lat: data[0].lat,
+      lon: data[0].lon
+    }
   }
 
   async function getWeatherData(lat, lon) {
-    try {
-      const response = await fetch(
-        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`,
-        {mode: 'cors'},
-      )
-      const responseData = await response.json()
-      console.log(responseData)
-    } catch(err) {
-      console.log(err)
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`,
+      {mode: 'cors'},
+    )
+    const responseData = await response.json()
+    const dateArr = createDateArray()
+
+    return {
+      name: responseData.city.name,
+      forecast: [
+        {
+          day: dateArr[0].getDay(),
+          date: `${dateArr[0].getDate} ${dateArr[0].getMonth()}`,
+          temp: responseData.list[0].main.temp,
+          weather: responseData.list[0].weather[0].id,
+          feelsLike: responseData.list[0].main.feels_like,
+          windSpeed: responseData.list[0].wind.speed
+        },
+        {
+          day: dateArr[1].getDay(),
+          date: `${dateArr[1].getDate} ${dateArr[1].getMonth()}`,
+          temp: responseData.list[8].main.temp,
+          weather: responseData.list[8].weather[0].id,
+          feelsLike: responseData.list[8].main.feels_like,
+          windSpeed: responseData.list[8].wind.speed
+        },
+        {
+          day: dateArr[2].getDay(),
+          date: `${dateArr[2].getDate} ${dateArr[2].getMonth()}`,
+          temp: responseData.list[16].main.temp,
+          weather: responseData.list[16].weather[0].id,
+          feelsLike: responseData.list[16].main.feels_like,
+          windSpeed: responseData.list[16].wind.speed
+        },
+        {
+          day: dateArr[3].getDay(),
+          date: `${dateArr[3].getDate} ${dateArr[3].getMonth()}`,
+          temp: responseData.list[24].main.temp,
+          weather: responseData.list[24].weather[0].id,
+          feelsLike: responseData.list[24].main.feels_like,
+          windSpeed: responseData.list[24].wind.speed
+        },
+        {
+          day: dateArr[4].getDay(),
+          date: `${dateArr[4].getDate} ${dateArr[4].getMonth()}`,
+          temp: responseData.list[32].main.temp,
+          weather: responseData.list[32].weather[0].id,
+          feelsLike: responseData.list[32].main.feels_like,
+          windSpeed: responseData.list[32].wind.speed
+        },
+      ]
     }
   }
 
   // Return functions
 
   async function makeLocationSearch(location) {
-    const coordinatesData = await getLocationData(location)
-    const weatherData = await getWeatherData(coordinatesData)
+    let weatherData
+    try {
+      const locationData = await getLocationData(location)
+      weatherData = await getWeatherData(locationData.lat, locationData.lon)
+      console.log(weatherData)
+    } catch(err) {
+      console.log(err)
+      weatherData = false
+    }
+    console.log(weatherData)
     return weatherData
   }
 
