@@ -52,7 +52,10 @@ const domManager = (() => {
       'type': 'text',
       'name': 'location-input',
       'id': 'location-input',
-      'placeholder': 'City, Town or Village'
+      'placeholder': 'City, Town or Village',
+      'minLength': 2,
+      'maxLength': 100,
+      'required': ''
     })
     label.appendChild(locationInput)
     const searchButton = createTextElement('button', 'search')
@@ -119,6 +122,7 @@ const domManager = (() => {
     const startupImage = createClassElement('img', 'startup-image')
     const startupHeader = createTextElement('h1', 'Whatever\'s the Weather')
     const startupPara = createTextElement('p', '')
+    return startupContainer.appendChildren(startupImage, startupHeader, startupPara)
   }
 
   function createForecastContainer(weatherInfo) {
