@@ -41,25 +41,41 @@ const domManager = (() => {
     return header.appendChild(logo)
   }
 
-  function createSearchInput() {
-    const formElement = document.createElement('form')
-    const fieldset = document.createElement('fieldset')
-
-    const label = document.createElement('label')
-    label.setAttribute('for', 'location-input')
+  function createSearchBar(inputName) {
     const locationInput = document.createElement('input')
     locationInput.setAttributes({
       'type': 'text',
-      'name': 'location-input',
-      'id': 'location-input',
+      'name': inputName,
+      'id': inputName,
       'placeholder': 'City, Town or Village',
       'minLength': 2,
       'maxLength': 100,
       'required': ''
     })
-    label.appendChild(locationInput)
+    return locationInput
+  }
+
+  function createButtonContainer() {
+    const buttonContainer = createClassElement('div', 'button-container')
+    const unitButton = createTextElement('button', 'Metric')
+    unitButton.classList.add('unit-button')
     const searchButton = createTextElement('button', 'search')
-    fieldset.appendChildren(label, searchButton)
+    searchButton.classList.add('search-button')
+    return buttonContainer.appendChildren(unitButton, searchButton)
+  }
+
+  function createSearchInput() {
+    const formElement = document.createElement('form')
+    const fieldset = document.createElement('fieldset')
+
+    const label = document.createElement('label')
+    label.setAttribute('for', 'nav-location-input')
+    const locationInput = createSearchBar('nav-location-input')
+    label.appendChild(locationInput)
+
+    const buttonContainer = createButtonContainer()
+
+    fieldset.appendChildren(label, buttonContainer)
     formElement.appendChild(fieldset)
     return formElement
   }
@@ -119,10 +135,12 @@ const domManager = (() => {
 
   function createStartupPage() {
     const startupContainer = createClassElement('div', 'startup-container')
-    const startupImage = createClassElement('img', 'startup-image')
-    const startupHeader = createTextElement('h1', 'Whatever\'s the Weather')
-    const startupPara = createTextElement('p', '')
-    return startupContainer.appendChildren(startupImage, startupHeader, startupPara)
+    const startupImage = createClassElement('div', 'startup-image')
+    const startupInput = createSearchBar('startup-location-input')
+    const searchButton = createTextElement('button', 'Search')
+    startupImage.appendChildren(startupInput, searchButton)
+    startupContainer.appendChild(startupImage)
+    return startupContainer
   }
 
   function createForecastContainer(weatherInfo) {
