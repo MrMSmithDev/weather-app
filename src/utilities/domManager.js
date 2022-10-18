@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 const domManager = (() => {
   const imageLibrary = {
-    sunny: '../assets/images/sunny.jpeg',
-    clouds: '../assets/images/cloud.jpg',
-    rain: '../assets/images/rain.jpeg',
-    storm: '../assets/images/storm.jpeg',
+    clouds: 'assets/images/cloud.jpg',
+    fog: 'assets/images/fog.jpeg',
+    rain: 'assets/images/rain.jpeg',
+    snow: 'assets/images/snow.jpeg',
+    sunny: 'assets/images/sunny.jpeg',
+    storm: 'assets/images/storm.jpeg',
   }
 
   // Utility functions
@@ -28,6 +30,15 @@ const domManager = (() => {
 
   HTMLElement.prototype.setAttributes = function setAttributes(attributeObject) {
     Object.keys(attributeObject).forEach((key) => this.setAttribute(key, attributeObject[key]))
+  }
+
+  function retrieveWeatherImage(weatherID) {
+    if (weatherID.match(/^800/)) return imageLibrary.sunny
+    if (weatherID.match(/\^8/)) return imageLibrary.clouds
+    if (weatherID.match(/\^(3|5)/)) return imageLibrary.rain
+    if (weatherID.match(/\^2/)) return imageLibrary.storm
+    if (weatherID.match(/\^6/)) return imageLibrary.snow
+    return imageLibrary.fog
   }
 
   // Dom creation functions
@@ -66,38 +77,34 @@ const domManager = (() => {
   }
 
   function createSearchInput() {
-    const formElement = document.createElement('form')
-    const fieldset = document.createElement('fieldset')
-
     const label = document.createElement('label')
     label.setAttribute('for', 'nav-location-input')
     const locationInput = createSearchBar('nav-location-input')
     label.appendChild(locationInput)
-
     const buttonContainer = createButtonContainer()
 
-    fieldset.appendChildren(label, buttonContainer)
-    formElement.appendChild(fieldset)
-    return formElement
+    return [label, buttonContainer]
   }
 
   // Update following function with suitable object access notation
-  function createMainForecast(weather, temperature, location) {
+  function createMainForecast(location, weatherForecast) {
     const wrapperDiv = createClassElement('div', 'current-forecast-container')
 
     const forecastImage = createClassElement('div', 'current-forecast-image')
+    forecastImage.style.backgroundImage = `url('${retrieveWeatherImage(weatherForecast.weather.weatherID.toString())}')`
+    const forecastInfo = createClassElement('div', 'current-forecast-info')
     const paraLocation = createClassElement('p', 'para-location')
     paraLocation.textContent = location
     const paraWeather = createClassElement('p', 'para-weather')
-    paraWeather.textContent = weather
+    paraWeather.textContent = `${weatherForecast.weather.weatherType}`
     const paraTemperature = createClassElement('p', 'para-temp')
-    paraTemperature.textContent = temperature
+    paraTemperature.textContent = weatherForecast.temp
 
-    return forecastImage.appendChildren(
-      wrapperDiv,
-      paraLocation,
-      paraWeather,
-      paraTemperature)
+    forecastInfo.appendChildren(paraLocation, paraWeather, paraTemperature)
+
+    return wrapperDiv.appendChildren(
+      forecastImage,
+      forecastInfo)
   }
 
   // Update following function with suitable object access notation
@@ -131,14 +138,15 @@ const domManager = (() => {
     const navElement = document.createElement('nav')
     const header = createHeaderElement()
     const locationSearch = createSearchInput()
-    return navElement.appendChildren(header, locationSearch)
+    return navElement.appendChildren(header, locationSearch[0], locationSearch[1])
   }
 
   function createStartupPage() {
     const startupContainer = createClassElement('div', 'startup-container')
-    const startupImage = createClassElement('div', 'startup-image')
+    const startupImage = document.createElement('div')
     const startupInput = createSearchBar('startup-location-input')
     const searchButton = createTextElement('button', 'Search')
+    searchButton.classList.add('search-button')
     startupImage.appendChildren(startupInput, searchButton)
     startupContainer.appendChild(startupImage)
     return startupContainer
@@ -146,10 +154,18 @@ const domManager = (() => {
 
   function createForecastContainer(weatherInfo) {
     const forecastContainer = createClassElement('div', 'forecast-container')
+    console.log(weatherInfo.name, weatherInfo.forecast[0])
     return forecastContainer.appendChildren(
-      createMainForecast(weatherInfo), // Pass in weather info for current day (Separated ))
-      createCardDeck(weatherInfo), // Pass in weather info object for days 2 - 7
+      createMainForecast(weatherInfo.name, weatherInfo.forecast[0]), // Pass in weather info for current day (Separated ))
+    //   createCardDeck(weatherInfo), // Pass in weather info object for days 2 - 7
     )
+  }
+
+  function createLoadingContainer() {
+    const loadingContainer = createClassElement('div', 'loading-container')
+    const loadingIcon = createClassElement('div', 'loading-icon')
+    loadingContainer.append(loadingIcon)
+    return loadingContainer
   }
 
   function showDashboard() {
@@ -182,6 +198,15 @@ const domManager = (() => {
     main.appendChild(createForecastContainer(weatherInfo)) // !! Pass in weather information here !!
   }
 
+  function showLoading() {
+    let main = document.querySelector('main')
+    if (!main) {
+      main = document.createElement('main')
+      layoutWrapper.appendChild(main)
+    }
+    main.appendChild(createLoadingContainer())
+  }
+
   function updateUnitText(newUnits) {
     const unitButtons = document.querySelectorAll('.unit-button')
     unitButtons.forEach(button => {
@@ -196,6 +221,7 @@ const domManager = (() => {
   return {
     initHome,
     showCurrentForecast,
+    showLoading,
     updateUnitText,
     removeMain,
   }
