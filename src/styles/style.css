@@ -34,7 +34,8 @@ main {
 /* Nav section */
 
 nav {
-    background-color: #98A8F8;
+    /* background-color: #98A8F8; */
+    background-color: #B73E3E;
     height: 100%;
     min-height: 100vh;
     min-width: 350px;
@@ -51,7 +52,7 @@ nav fieldset {
     border: none;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     margin: 10px;
 }
 
@@ -65,7 +66,11 @@ input[type=text] {
 
 fieldset .button-container {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
+}
+
+.button-container button {
+    flex-grow: 1;
 }
 
 button {
@@ -83,7 +88,7 @@ button {
 }
 
 button:hover {
-    background-color: rgb(155, 131, 104);
+    background-color: rgb(185, 161, 134);
 }
 
 /* Startup section */
@@ -98,13 +103,13 @@ button:hover {
 
 .startup-container .startup-image {
     align-items: center;
-    background-image: url('../assets/images/banner.png');
+    background-image: url('../assets/images/background.jpg');
     background-position: center;
     background-size: cover;
     display: flex;
     gap: 10px;
     justify-content: center;
-    height: 200px;
+    height: 100%;
     width: 100%;
 }
 
