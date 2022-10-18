@@ -145,6 +145,7 @@ const apiManager = (() => {
     } else {
       units = 'imperial'
     }
+    return units
   }
 
   return {
