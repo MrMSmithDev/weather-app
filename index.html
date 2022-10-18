@@ -26,14 +26,31 @@
                     <label for="location-input">
                         <input type="text" name="location-input" id="location-input" placeholder="City, Town or Village">
                     </label>
-                    <button>Search</button>
+                    <div class="button-container">
+                        <button class="unit-button">Units</button>
+                        <button class="search-button">Search</button>
+                    </div>
                 </fieldset>
             </form>
 
         </nav>
 
         <main>
-            <div class="forecast-container">
+
+            <!-- const startupContainer = createClassElement('div', 'startup-container')
+    const startupImage = createClassElement('img', 'startup-image')
+    const startupHeader = createTextElement('h1', 'Whatever\'s the Weather')
+    const startupPara = createTextElement('p', '') -->
+
+    <div class="startup-container">
+        <div class="startup-image">
+            <input type="text" name="" id="" placeholder="City, Town or Village">
+            <button class="search-button">Search</button>
+        </div>
+    </div>
+
+
+            <!-- <div class="forecast-container">
                 <div class="current-forecast-container">
                     <div class="current-forecast-image"></div>
                     <p class="para-location">Location</p>
@@ -71,8 +88,8 @@
                         <p class="para-weather">weather</p>
                         <p class="para-temp">temperature</p>
                     </div>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
         </main>
     </div>
 
