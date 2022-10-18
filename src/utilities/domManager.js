@@ -37,8 +37,9 @@ const domManager = (() => {
 
   function createHeaderElement() {
     const header = document.createElement('header')
-    const logo = createTextElement('h1', 'Whatever the Weather')
-    return header.appendChild(logo)
+    const logo = createTextElement('h1', 'Whatever\'s the Weather')
+    header.appendChild(logo)
+    return header
   }
 
   function createSearchBar(inputName) {
