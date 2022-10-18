@@ -1,6 +1,9 @@
 import { addDays } from 'date-fns'
 
 const apiManager = (() => {
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
   let units = 'metric'
   const apiKey = '43df7ed317e5646ac516d5c73acdd3fc'
 
@@ -78,40 +81,40 @@ const apiManager = (() => {
       name: responseData.city.name,
       forecast: [
         {
-          day: dateArr[0].getDay(),
-          date: `${dateArr[0].getDate} ${dateArr[0].getMonth()}`,
+          day: days[dateArr[0].getDay()],
+          date: `${[dateArr[0].getDate()]} ${months[dateArr[0].getMonth()]}`,
           temp: responseData.list[0].main.temp,
           weather: responseData.list[0].weather[0].id,
           feelsLike: responseData.list[0].main.feels_like,
           windSpeed: responseData.list[0].wind.speed
         },
         {
-          day: dateArr[1].getDay(),
-          date: `${dateArr[1].getDate} ${dateArr[1].getMonth()}`,
+          day: days[dateArr[1].getDay()],
+          date: `${dateArr[1].getDate()} ${months[dateArr[1].getMonth()]}`,
           temp: responseData.list[8].main.temp,
           weather: responseData.list[8].weather[0].id,
           feelsLike: responseData.list[8].main.feels_like,
           windSpeed: responseData.list[8].wind.speed
         },
         {
-          day: dateArr[2].getDay(),
-          date: `${dateArr[2].getDate} ${dateArr[2].getMonth()}`,
+          day: days[dateArr[2].getDay()],
+          date: `${dateArr[2].getDate()} ${months[dateArr[2].getMonth()]}`,
           temp: responseData.list[16].main.temp,
           weather: responseData.list[16].weather[0].id,
           feelsLike: responseData.list[16].main.feels_like,
           windSpeed: responseData.list[16].wind.speed
         },
         {
-          day: dateArr[3].getDay(),
-          date: `${dateArr[3].getDate} ${dateArr[3].getMonth()}`,
+          day: days[dateArr[3].getDay()],
+          date: `${dateArr[3].getDate()} ${months[dateArr[3].getMonth()]}`,
           temp: responseData.list[24].main.temp,
           weather: responseData.list[24].weather[0].id,
           feelsLike: responseData.list[24].main.feels_like,
           windSpeed: responseData.list[24].wind.speed
         },
         {
-          day: dateArr[4].getDay(),
-          date: `${dateArr[4].getDate} ${dateArr[4].getMonth()}`,
+          day: days[dateArr[4].getDay()],
+          date: `${dateArr[4].getDate()} ${months[dateArr[4].getMonth()]}`,
           temp: responseData.list[32].main.temp,
           weather: responseData.list[32].weather[0].id,
           feelsLike: responseData.list[32].main.feels_like,
@@ -128,7 +131,6 @@ const apiManager = (() => {
     try {
       const locationData = await getLocationData(location)
       weatherData = await getWeatherData(locationData.lat, locationData.lon)
-      console.log(weatherData)
     } catch(err) {
       console.log(err)
       weatherData = false
