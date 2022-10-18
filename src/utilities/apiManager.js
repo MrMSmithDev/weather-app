@@ -75,6 +75,7 @@ const apiManager = (() => {
       {mode: 'cors'},
     )
     const responseData = await response.json()
+    console.log(responseData)
     const dateArr = createDateArray()
 
     return {
@@ -84,7 +85,10 @@ const apiManager = (() => {
           day: days[dateArr[0].getDay()],
           date: `${[dateArr[0].getDate()]} ${months[dateArr[0].getMonth()]}`,
           temp: responseData.list[0].main.temp,
-          weather: responseData.list[0].weather[0].id,
+          weather: {
+            weatherID: responseData.list[0].weather[0].id,
+            weatherType: responseData.list[0].weather[0].description
+          },
           feelsLike: responseData.list[0].main.feels_like,
           windSpeed: responseData.list[0].wind.speed
         },
@@ -92,7 +96,10 @@ const apiManager = (() => {
           day: days[dateArr[1].getDay()],
           date: `${dateArr[1].getDate()} ${months[dateArr[1].getMonth()]}`,
           temp: responseData.list[8].main.temp,
-          weather: responseData.list[8].weather[0].id,
+          weather: {
+            weatherID: responseData.list[8].weather[0].id,
+            weatherType: responseData.list[8].weather[0].description
+          },
           feelsLike: responseData.list[8].main.feels_like,
           windSpeed: responseData.list[8].wind.speed
         },
@@ -100,7 +107,10 @@ const apiManager = (() => {
           day: days[dateArr[2].getDay()],
           date: `${dateArr[2].getDate()} ${months[dateArr[2].getMonth()]}`,
           temp: responseData.list[16].main.temp,
-          weather: responseData.list[16].weather[0].id,
+          weather: {
+            weatherID: responseData.list[16].weather[0].id,
+            weatherType: responseData.list[16].weather[0].description
+          },
           feelsLike: responseData.list[16].main.feels_like,
           windSpeed: responseData.list[16].wind.speed
         },
@@ -108,7 +118,10 @@ const apiManager = (() => {
           day: days[dateArr[3].getDay()],
           date: `${dateArr[3].getDate()} ${months[dateArr[3].getMonth()]}`,
           temp: responseData.list[24].main.temp,
-          weather: responseData.list[24].weather[0].id,
+          weather: {
+            weatherID: responseData.list[16].weather[0].id,
+            weatherType: responseData.list[16].weather[0].description
+          },
           feelsLike: responseData.list[24].main.feels_like,
           windSpeed: responseData.list[24].wind.speed
         },
@@ -116,7 +129,10 @@ const apiManager = (() => {
           day: days[dateArr[4].getDay()],
           date: `${dateArr[4].getDate()} ${months[dateArr[4].getMonth()]}`,
           temp: responseData.list[32].main.temp,
-          weather: responseData.list[32].weather[0].id,
+          weather: {
+            weatherID: responseData.list[32].weather[0].id,
+            weatherType: responseData.list[32].weather[0].description
+          },
           feelsLike: responseData.list[32].main.feels_like,
           windSpeed: responseData.list[32].wind.speed
         },
