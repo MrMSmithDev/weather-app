@@ -19,8 +19,8 @@ const apiManager = (() => {
     const searchType = checkSearchType(searchTerm)
 
     if (searchType === 'LocationName' || searchType === 'unknown') searchQuery = `direct?q=${searchTerm}`
-    if (searchTerm === 'postcode') searchQuery = `zip?zip=${searchTerm}`
-    if (searchTerm === 'lonLat') {
+    if (searchType === 'postcode') searchQuery = `zip?zip=${searchTerm}`
+    if (searchType === 'lonLat') {
       const splitSearch = searchTerm.replace(/\s/, '').split(',')
       searchQuery = `reverse?lat=${splitSearch[0]}&lon=${splitSearch[1]}`
     }
