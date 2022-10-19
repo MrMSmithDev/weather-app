@@ -75,7 +75,6 @@ const apiManager = (() => {
       {mode: 'cors'},
     )
     const responseData = await response.json()
-    console.log(responseData)
     const dateArr = createDateArray()
 
     return {
@@ -151,7 +150,6 @@ const apiManager = (() => {
       console.log(err)
       weatherData = false
     }
-    console.log(weatherData)
     return weatherData
   }
 
