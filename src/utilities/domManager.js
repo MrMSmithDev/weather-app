@@ -86,21 +86,47 @@ const domManager = (() => {
     return [label, buttonContainer]
   }
 
+  function createForecastInfo(location, weatherForecast, unit) {
+    const forecastInfo = createClassElement('div', 'current-forecast-info')
+
+    const paraLocation = createClassElement('p', 'para-location')
+    const paraDate = createClassElement('p', 'para-date')
+    const paraTemperature = createClassElement('p', 'para-temp')
+    const paraWeather = createClassElement('p', 'para-weather')
+    const paraFeelsLike = createClassElement('p', 'para-feels-like')
+    const paraWindSpeed = createClassElement('p', 'para-wind-speed')
+    
+    paraLocation.textContent = location
+    paraDate.textContent = `${weatherForecast.day} ${weatherForecast.date}`
+    paraWeather.textContent = weatherForecast.weather.weatherType
+
+    if (unit === 'metric') {
+      paraTemperature.textContent = `${weatherForecast.temp}°C`
+      paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°C`
+      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed} m/s`
+    } else {
+      paraTemperature.textContent = `${weatherForecast.temp}°F`
+      paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°F`
+      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed} mph`
+    }
+
+    return forecastInfo.appendChildren(
+      paraLocation,
+      paraDate,
+      paraTemperature,
+      paraWeather,
+      paraFeelsLike,
+      paraWindSpeed
+    )
+  }
+
   // Update following function with suitable object access notation
-  function createMainForecast(location, weatherForecast) {
+  function createMainForecast(location, weatherForecast, unit) {
     const wrapperDiv = createClassElement('div', 'current-forecast-container')
 
     const forecastImage = createClassElement('div', 'current-forecast-image')
     forecastImage.style.backgroundImage = `url('${retrieveWeatherImage(weatherForecast.weather.weatherID.toString())}')`
-    const forecastInfo = createClassElement('div', 'current-forecast-info')
-    const paraLocation = createClassElement('p', 'para-location')
-    paraLocation.textContent = location
-    const paraWeather = createClassElement('p', 'para-weather')
-    paraWeather.textContent = `${weatherForecast.weather.weatherType}`
-    const paraTemperature = createClassElement('p', 'para-temp')
-    paraTemperature.textContent = weatherForecast.temp
-
-    forecastInfo.appendChildren(paraLocation, paraWeather, paraTemperature)
+    const forecastInfo = createForecastInfo(location, weatherForecast, unit)
 
     return wrapperDiv.appendChildren(
       forecastImage,
@@ -108,7 +134,7 @@ const domManager = (() => {
   }
 
   // Update following function with suitable object access notation
-  function createCardDeck(weather) {
+  function createCardDeck(weather, unit) {
     const createForecastCard = (weatherInfo, containerElement) => {
       weatherInfo.forEach((day) => {
         const card = createClassElement('div', 'card')
@@ -116,7 +142,7 @@ const domManager = (() => {
         const paraWeather = createClassElement('p', 'para-weather')
         paraWeather.textContent = day.weatherType
         const paraTemperature = createClassElement('p', 'para-temperature')
-        paraTemperature.textContent = day.temperature
+        paraTemperature.textContent = `${day.temperature}°${unit}`
         cardImage.appendChildren(card,
           paraWeather,
           paraTemperature,
@@ -152,11 +178,11 @@ const domManager = (() => {
     return startupContainer
   }
 
-  function createForecastContainer(weatherInfo) {
+  function createForecastContainer(weatherInfo, units) {
     const forecastContainer = createClassElement('div', 'forecast-container')
     console.log(weatherInfo.name, weatherInfo.forecast[0])
     return forecastContainer.appendChildren(
-      createMainForecast(weatherInfo.name, weatherInfo.forecast[0]), // Pass in weather info for current day (Separated ))
+      createMainForecast(weatherInfo.name, weatherInfo.forecast[0], units), // Pass in weather info for current day (Separated ))
     //   createCardDeck(weatherInfo), // Pass in weather info object for days 2 - 7
     )
   }
@@ -189,13 +215,15 @@ const domManager = (() => {
     showStartupMain()
   }
 
-  function showCurrentForecast(weatherInfo) {
+  function showCurrentForecast(weatherInfo, unitInfo) {
+    const units = unitInfo || 'metric'
+
     let main = document.querySelector('main')
     if (!main) {
       main = document.createElement('main')
       layoutWrapper.appendChild(main)
     }
-    main.appendChild(createForecastContainer(weatherInfo)) // !! Pass in weather information here !!
+    main.appendChild(createForecastContainer(weatherInfo, units))
   }
 
   function showLoading() {
