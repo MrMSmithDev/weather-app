@@ -7,7 +7,7 @@ async function showForecast(inputBar) {
   dom.showLoading()
   const weatherData = await api.makeLocationSearch(inputBar.value)
   dom.removeMain()
-  dom.showCurrentForecast(weatherData)
+  dom.showCurrentForecast(weatherData, api.getCurrentUnits())
 }
 
 dom.initHome()
