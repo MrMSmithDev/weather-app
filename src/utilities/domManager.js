@@ -152,7 +152,8 @@ const domManager = (() => {
     }
 
     const cardStack = createClassElement('div', 'card-stack')
-    createCardDeck(weather, cardStack)
+    console.log(weather)
+    createForecastCard(weather, cardStack)
     return cardStack
   }
 
@@ -180,10 +181,9 @@ const domManager = (() => {
 
   function createForecastContainer(weatherInfo, units) {
     const forecastContainer = createClassElement('div', 'forecast-container')
-    console.log(weatherInfo.name, weatherInfo.forecast[0])
     return forecastContainer.appendChildren(
-      createMainForecast(weatherInfo.name, weatherInfo.forecast[0], units), // Pass in weather info for current day (Separated ))
-    //   createCardDeck(weatherInfo), // Pass in weather info object for days 2 - 7
+      createMainForecast(weatherInfo.name, weatherInfo.forecast[0], units),
+      createCardDeck(weatherInfo.forecast.slice(1)), // Pass in weather info object for days 2 - 7
     )
   }
 
