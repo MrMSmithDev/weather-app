@@ -5,9 +5,14 @@ import dom from './utilities/domManager'
 async function showForecast(inputBar) {
   dom.removeMain()
   dom.showLoading()
-  const weatherData = await api.makeLocationSearch(inputBar.value)
-  dom.removeMain()
-  dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+  try {
+    const weatherData = await api.makeLocationSearch(inputBar.value)
+    dom.removeMain()
+    dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+  } catch(err) {
+    dom.showErrorModal()
+  }
+  
 }
 
 dom.initHome()
@@ -29,3 +34,11 @@ unitButton.addEventListener('click', () => {
   const newUnits = api.changeApiUnits()
   dom.updateUnitText(newUnits)
 })
+
+// async function initialForecastTest() {
+//   const weatherData = await api.makeLocationSearch('Bristol')
+//   dom.removeMain()
+//   dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+// }
+
+// initialForecastTest()
