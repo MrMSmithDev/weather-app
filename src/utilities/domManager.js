@@ -34,10 +34,10 @@ const domManager = (() => {
 
   function retrieveWeatherImage(weatherID) {
     if (weatherID.match(/^800/)) return imageLibrary.sunny
-    if (weatherID.match(/\^8/)) return imageLibrary.clouds
-    if (weatherID.match(/\^(3|5)/)) return imageLibrary.rain
-    if (weatherID.match(/\^2/)) return imageLibrary.storm
-    if (weatherID.match(/\^6/)) return imageLibrary.snow
+    if (weatherID.match(/^8/)) return imageLibrary.clouds
+    if (weatherID.match(/^(3|5)/)) return imageLibrary.rain
+    if (weatherID.match(/^2/)) return imageLibrary.storm
+    if (weatherID.match(/^6/)) return imageLibrary.snow
     return imageLibrary.fog
   }
 
@@ -103,11 +103,11 @@ const domManager = (() => {
     if (unit === 'metric') {
       paraTemperature.textContent = `${weatherForecast.temp}°C`
       paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°C`
-      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed} m/s`
+      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed}m/s`
     } else {
       paraTemperature.textContent = `${weatherForecast.temp}°F`
       paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°F`
-      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed} mph`
+      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed}mph`
     }
 
     return forecastInfo.appendChildren(
@@ -134,24 +134,55 @@ const domManager = (() => {
   }
 
   // Update following function with suitable object access notation
-  function createCardDeck(weather, unit) {
+  function createCardDeck(weather, units) {
+    const createCardInfo = (day) => {
+      const cardInfo = createClassElement('div', 'card-info')
+      const paraDate = createClassElement('p', 'para-date')
+      const paraWeather = createClassElement('p', 'para-weather')
+      const paraTemperature = createClassElement('p', 'para-temperature')
+      const paraFeelsLike = createClassElement('p', 'para-feels-like')
+      const paraWindSpeed = createClassElement('p', 'paraWindSpeed')
+
+      paraDate.textContent = `${day.day} ${day.date}`
+      paraWeather.textContent = day.weather.weatherType
+
+      if (units === 'metric') {
+        paraTemperature.textContent = `${day.temp}°C`
+        paraFeelsLike.textContent = `Feels like: ${day.feelsLike}°C`
+        paraWindSpeed.textContent = `Wind speed: ${day.windSpeed}m/s`
+      } else {
+        paraTemperature.textContent = `${day.temp}°F`
+        paraFeelsLike.textContent = `Feels like: ${day.feelsLike}°F`
+        paraWindSpeed.textContent = `Wind speed: ${day.windSpeed}mph`
+      }
+
+      return cardInfo.appendChildren(
+        paraDate,
+        paraWeather,
+        paraTemperature,
+        paraFeelsLike,
+        paraWindSpeed
+      )
+         
+    }
+
     const createForecastCard = (weatherInfo, containerElement) => {
       weatherInfo.forEach((day) => {
-        const card = createClassElement('div', 'card')
-        const cardImage = document.createElement('img')
-        const paraWeather = createClassElement('p', 'para-weather')
-        paraWeather.textContent = day.weatherType
-        const paraTemperature = createClassElement('p', 'para-temperature')
-        paraTemperature.textContent = `${day.temperature}°${unit}`
-        cardImage.appendChildren(card,
-          paraWeather,
-          paraTemperature,
+        console.log(day)
+        const card = createClassElement('div', 'forecast-card')
+        const cardImage = createClassElement('div', 'card-image')
+        cardImage.style.backgroundImage = `url('${retrieveWeatherImage(day.weather.weatherID.toString())}')`
+        const cardInfo = createCardInfo(day)
+
+        card.appendChildren(
+          cardImage,
+          cardInfo,
         )
         containerElement.appendChild(card)
       })
     }
 
-    const cardStack = createClassElement('div', 'card-stack')
+    const cardStack = createClassElement('div', 'forecast-card-stack')
     console.log(weather)
     createForecastCard(weather, cardStack)
     return cardStack
@@ -183,7 +214,7 @@ const domManager = (() => {
     const forecastContainer = createClassElement('div', 'forecast-container')
     return forecastContainer.appendChildren(
       createMainForecast(weatherInfo.name, weatherInfo.forecast[0], units),
-      createCardDeck(weatherInfo.forecast.slice(1)), // Pass in weather info object for days 2 - 7
+      createCardDeck(weatherInfo.forecast.slice(1), units),
     )
   }
 
@@ -233,6 +264,10 @@ const domManager = (() => {
       layoutWrapper.appendChild(main)
     }
     main.appendChild(createLoadingContainer())
+  }
+
+  function showErrorModal() {
+    
   }
 
   function updateUnitText(newUnits) {
