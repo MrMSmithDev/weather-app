@@ -4,7 +4,7 @@ const domManager = (() => {
     clouds: 'assets/images/cloud.jpg',
     fog: 'assets/images/fog.jpeg',
     rain: 'assets/images/rain.jpeg',
-    snow: 'assets/images/snow.jpeg',
+    snow: 'assets/images/snow.jpg',
     sunny: 'assets/images/sunny.jpeg',
     storm: 'assets/images/storm.jpeg',
   }
@@ -225,6 +225,13 @@ const domManager = (() => {
     return loadingContainer
   }
 
+  function createErrorModal() {
+    const modal = createClassElement('div', 'modal')
+    const errorLineOne = createTextElement('p', 'We could not find a location with the information you have entered')
+    const errorLineTwo = createTextElement('p', 'Please check your spelling or coordinates and try again')
+    return modal.appendChildren(errorLineOne, errorLineTwo)
+  }
+
   function showDashboard() {
     layoutWrapper.appendChild(createNavElement())
     layoutWrapper.appendChild(createMainElement())
@@ -267,7 +274,12 @@ const domManager = (() => {
   }
 
   function showErrorModal() {
-    
+    let main = document.querySelector('main')
+    if (!main) {
+      main = document.createElement('main')
+      layoutWrapper.appendChild(main)
+    }
+    main.appendChild(createErrorModal())
   }
 
   function updateUnitText(newUnits) {
@@ -285,6 +297,7 @@ const domManager = (() => {
     initHome,
     showCurrentForecast,
     showLoading,
+    showErrorModal,
     updateUnitText,
     removeMain,
   }
