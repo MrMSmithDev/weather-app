@@ -10,9 +10,9 @@ async function showForecast(inputBar) {
     dom.removeMain()
     dom.showCurrentForecast(weatherData, api.getCurrentUnits())
   } catch(err) {
+    dom.removeMain()
     dom.showErrorModal()
   }
-  
 }
 
 dom.initHome()
