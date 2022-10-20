@@ -218,3 +218,17 @@ button:hover {
 }
 
 /* Modals */
+
+.modal {
+    background-color: #B73E3E;
+    border-radius: 10px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    color: rgb(255, 231, 204);
+    font-size: 2rem;
+    padding: 20px;
+    text-align: center;
+}
+
+.modal p:first-of-type {
+    margin-bottom: 10px;
+}
