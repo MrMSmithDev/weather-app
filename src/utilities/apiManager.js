@@ -49,7 +49,7 @@ const apiManager = (() => {
     const searchQuery = createSearchQuery(searchTerm, searchType)
 
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/${searchQuery}&limit=1&appid=${apiKey}`,
+      `https://api.openweathermap.org/geo/1.0/${searchQuery}&limit=1&appid=${apiKey}`,
       {mode: 'cors'},
     )
     const data = await response.json()
@@ -71,7 +71,7 @@ const apiManager = (() => {
 
   async function getWeatherData(lat, lon) {
     const response = await fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`,
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`,
       {mode: 'cors'},
     )
     const responseData = await response.json()
