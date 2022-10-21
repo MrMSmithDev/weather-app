@@ -6,7 +6,8 @@ module.exports = {
   entry: './src/index.js',
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Whatever\'s the Weather'
+      title: 'Whatever\'s the Weather',
+      favicon: './src/assets/images/favicon.ico'
     })
   ],
   output: {
@@ -30,6 +31,10 @@ module.exports = {
       { // Webfonts
         test: /\.(woff|woff2|otf|ttf)$/i,
         type: 'asset/resource'
+      },
+      { // Favicon
+        test: /\.ico$/i,
+        type: 'asset/resource',
       },
     ],
   },
