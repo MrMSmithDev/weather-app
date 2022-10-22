@@ -1,44 +1,29 @@
 import './styles/style.css'
-import api from './utilities/apiManager'
 import dom from './utilities/domManager'
 
-async function showForecast(inputBar) {
-  dom.removeMain()
-  dom.showLoading()
-  try {
-    const weatherData = await api.makeLocationSearch(inputBar.value)
-    dom.removeMain()
-    dom.showCurrentForecast(weatherData, api.getCurrentUnits())
-  } catch(err) {
-    dom.removeMain()
-    dom.showErrorModal()
-  }
-}
+// async function showForecast(inputBar) {
+//   dom.removeMain()
+//   dom.showLoading()
+//   try {
+//     const weatherData = await api.makeLocationSearch(inputBar.value)
+//     dom.removeMain()
+//     dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+//   } catch(err) {
+//     dom.removeMain()
+//     dom.showErrorModal()
+//   }
+// }
 
 dom.initHome()
 
-const navSearchBar = document.querySelector('#nav-location-input')
-const navSearchButton = document.querySelector('nav .search-button')
-navSearchButton.addEventListener('click', () => {
-  showForecast(navSearchBar)
-})
+// const searchBar = document.querySelector('#nav-location-input')
+// const navSearchButton = document.querySelector('nav .search-button')
+// navSearchButton.addEventListener('click', () => {
+//   showForecast(searchBar)
+// })
 
-const startupSearchBar = document.querySelector('#startup-location-input')
-const startupSearchButton = document.querySelector('.startup-container .search-button')
-startupSearchButton.addEventListener('click', () => {
-  showForecast(startupSearchBar)
-})
-
-const unitButton = document.querySelector('.unit-button')
-unitButton.addEventListener('click', () => {
-  const newUnits = api.changeApiUnits()
-  dom.updateUnitText(newUnits)
-})
-
-// async function initialForecastTest() {
-//   const weatherData = await api.makeLocationSearch('Bristol')
-//   dom.removeMain()
-//   dom.showCurrentForecast(weatherData, api.getCurrentUnits())
-// }
-
-// initialForecastTest()
+// const unitButton = document.querySelector('.unit-button')
+// unitButton.addEventListener('click', () => {
+//   const newUnits = api.changeApiUnits()
+//   dom.updateUnitText(newUnits)
+// })
