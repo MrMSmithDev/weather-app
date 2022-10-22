@@ -1,3 +1,7 @@
+:root {
+    --font-color: rgb(245, 245, 245);
+}
+
 /* css resets */
 
 *, html, body, a, ul {
@@ -19,25 +23,57 @@
 }
 
 body {
+    background-image: url('../assets/images/background.jpg');
+    background-position: center;
+    background-size: cover;
     font-family: "moonless", sans-serif;
     min-height: 100vh; 
 }
 
 main {
-    background-image: url('../assets/images/background.jpg');
-    background-position: center;
-    background-size: cover;
+    background-color: rgba(183, 196, 207, 0.6);
+    color: var(--font-color);
     display: flex;
+    gap: 10px;
     flex-direction: column;
     height: 100vh;
+    padding: 20px;
     width: 100vw;
 }
 
+.search-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search-container input[type=text] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid var(--font-color);
+    font-size: 1.2rem;
+    padding: 3px;
+    width: 300px;
+}
+
+.search-container input[type=text]:focus {
+    outline: none;
+}
+
+.search-container button {
+    background-color: transparent;
+    border: none
+}
+
 .top-forecast-container {
+    background-color: blue;
     display: flex;
     justify-content: space-between;
 }
 
 .daily-forecast-container {
     background-color: red;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
 }
