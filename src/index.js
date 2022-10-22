@@ -14,7 +14,7 @@ import dom from './utilities/domManager'
 //   }
 // }
 
-dom.initHome()
+dom.showPage()
 
 // const searchBar = document.querySelector('#nav-location-input')
 // const navSearchButton = document.querySelector('nav .search-button')
