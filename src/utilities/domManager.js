@@ -41,10 +41,83 @@ const domManager = (() => {
     return imageLibrary.fog
   }
 
+  // Information div creation
+
+  const weatherInfo = {
+    name: 'Bristol',
+    day: 'Tuesday',
+    date: '24 Oct',
+    weather: 'cloudy',
+    temp: 22,
+    feelsLike: 23,
+    windSpeed: 14,
+  }
+
+  function updateCurrentHeadlines() {
+    const headlinesContainer = createClassElement('div', 'headlines-container')
+
+    const dateHeadline = createTextElement('p', `${weatherInfo.day} ${weatherInfo.date}`)
+    const locationHeadline = createTextElement('h1', weatherInfo.name)
+    const weatherHeadline = createTextElement('p', weatherInfo.weather)
+    const tempHeadline = createTextElement('h1', `${weatherInfo.temp}`)
+    
+    return headlinesContainer.appendChildren(
+      dateHeadline,
+      locationHeadline,
+      weatherHeadline,
+      tempHeadline,
+    )
+  }
+
   // Dom creation functions
+
+  function createSearchBar() {
+    const searchContainer = createClassElement('div', 'search-container')
+    const searchInput = document.createElement('input')
+    searchInput.setAttributes({
+      'type': 'text',
+      'name': 'location-search',
+      'id': 'location-search',
+      'minLength': 3,
+    })
+    const searchButton = createTextElement('button', 'Search')
+    return searchContainer.appendChildren(searchInput, searchButton)
+  }
+
+  function createCurrentForecast() {
+    const topForecast = createClassElement('div', 'top-forecast-container')
+
+    const headlineDetails = createClassElement('div', 'today-headlines')
+    const currentHeadlines = createClassElement('div', 'current-headlines')
+    console.log(currentHeadlines)
+    currentHeadlines.appendChild(updateCurrentHeadlines())
+    const extraDetails = createClassElement('div', 'today-extras')
+    return topForecast.appendChildren(
+      headlineDetails,
+      currentHeadlines,
+      extraDetails)
+  }
+
+  function createFutureForecast() {
+    // Continue Here
+  }
 
   function createMainLayout() {
     const main = document.createElement('main')
+    return main.appendChildren(
+      createSearchBar(),
+      createCurrentForecast(),
+    )
+  }
+
+  // Return functions
+
+  function showPage() {
+    document.body.append(createMainLayout())
+  }
+
+  return {
+    showPage
   }
 
 })()
