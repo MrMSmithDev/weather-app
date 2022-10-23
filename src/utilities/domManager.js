@@ -47,25 +47,56 @@ const domManager = (() => {
     name: 'Bristol',
     day: 'Tuesday',
     date: '24 Oct',
+    time: '09:45',
     weather: 'cloudy',
     temp: 22,
     feelsLike: 23,
     windSpeed: 14,
+    rainChance: '27%',
+    humidity: '85%',
   }
 
   function updateCurrentHeadlines() {
-    const headlinesContainer = createClassElement('div', 'headlines-container')
+    const headlinesContainer = createClassElement('div', 'current-headlines')
 
     const dateHeadline = createTextElement('p', `${weatherInfo.day} ${weatherInfo.date}`)
+    const timeHeadline = createTextElement('p', weatherInfo.time)
     const locationHeadline = createTextElement('h1', weatherInfo.name)
     const weatherHeadline = createTextElement('p', weatherInfo.weather)
     const tempHeadline = createTextElement('h1', `${weatherInfo.temp}`)
     
     return headlinesContainer.appendChildren(
       dateHeadline,
+      timeHeadline,
       locationHeadline,
       weatherHeadline,
       tempHeadline,
+    )
+  }
+
+  function updateCurrentExtras() {
+    const addGrid = (icon, title, data) => {
+      const grid = createClassElement('div', 'extras-grid')
+      const iconSpace = createClassElement('div', 'extras-icon')
+      const iconChar = createClassElement('i', ...icon)
+      const titleSpace = createClassElement('div', 'extras-title')
+      titleSpace.textContent = title
+      const dataSpace = createClassElement('div', 'extras-data')
+      dataSpace.textContent = data
+      return grid.appendChildren(iconSpace, titleSpace, dataSpace)
+    }
+
+    const extrasContainer = createClassElement('div', 'current-extras')
+
+    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', weatherInfo.windSpeed)
+    const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', weatherInfo.humidity)
+    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', weatherInfo.feelsLike)
+    const rainChance = addGrid(['fa-solid', 'fa-cloud-sun-rain'], 'Chance of Rain', weatherInfo.rainChance)
+    return extrasContainer.appendChildren(
+      windGrid,
+      Humidity,
+      feelsLike,
+      rainChance
     )
   }
 
@@ -88,13 +119,13 @@ const domManager = (() => {
     const topForecast = createClassElement('div', 'top-forecast-container')
 
     const headlineDetails = createClassElement('div', 'today-headlines')
-    const currentHeadlines = createClassElement('div', 'current-headlines')
-    console.log(currentHeadlines)
-    currentHeadlines.appendChild(updateCurrentHeadlines())
+    headlineDetails.appendChild(updateCurrentHeadlines())
+
     const extraDetails = createClassElement('div', 'today-extras')
+    extraDetails.appendChild(updateCurrentExtras())
+
     return topForecast.appendChildren(
       headlineDetails,
-      currentHeadlines,
       extraDetails)
   }
 
