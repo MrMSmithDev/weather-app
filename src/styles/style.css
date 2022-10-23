@@ -15,9 +15,9 @@
 }
 
 @font-face {
-    font-family: "moonless";
-    src: url('../assets/webfonts/moonlesssc-regular_1-webfont.woff2') format('woff2'),
-         url('../assets/webfonts/moonlesssc-regular_1-webfont.woff') format('woff');
+    font-family: "lack";
+    src: url('../assets/webfonts/lack-regular-webfont.woff2') format('woff2'),
+         url('../assets/webfonts/lack-regular-webfont.woff') format('woff');
     font-style: normal;
     font-weight: normal;
 }
@@ -26,12 +26,12 @@ body {
     background-image: url('../assets/images/background.jpg');
     background-position: center;
     background-size: cover;
-    font-family: "moonless", sans-serif;
+    font-family: "lack", sans-serif;
     min-height: 100vh; 
 }
 
 main {
-    background-color: rgba(183, 196, 207, 0.6);
+    background-color: rgba(165, 177, 187, 0.6);
     color: var(--font-color);
     display: flex;
     gap: 10px;
@@ -62,14 +62,31 @@ main {
 
 .search-container button {
     background-color: transparent;
-    border: none
+    border: none;
+    font-family: 'lack', sans-serif;
+    font-size: 1.2rem;
 }
 
+/* Top forecast sections */
+
 .top-forecast-container {
-    background-color: blue;
     display: flex;
     justify-content: space-between;
 }
+
+.current-headlines p {
+    font-size: 1.8rem;
+}
+
+.current-headlines p:nth-of-type(2) {
+    font-size: 1rem;
+}
+
+.current-headlines h1 {
+    font-size: 3rem;
+}
+
+/* Bottom forecast sections */
 
 .daily-forecast-container {
     background-color: red;
