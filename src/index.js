@@ -1,4 +1,5 @@
 import './styles/style.css'
+import './assets/fontawesome-css/all.css'
 import dom from './utilities/domManager'
 
 // async function showForecast(inputBar) {
