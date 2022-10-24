@@ -63,7 +63,7 @@ const domManager = (() => {
     const timeHeadline = createTextElement('p', weatherInfo.time)
     const locationHeadline = createTextElement('h1', weatherInfo.name)
     const weatherHeadline = createTextElement('p', weatherInfo.weather)
-    const tempHeadline = createTextElement('h1', `${weatherInfo.temp}`)
+    const tempHeadline = createTextElement('h1', `${weatherInfo.temp}°`)
     
     return headlinesContainer.appendChildren(
       dateHeadline,
@@ -78,7 +78,9 @@ const domManager = (() => {
     const addGrid = (icon, title, data) => {
       const grid = createClassElement('div', 'extras-grid')
       const iconSpace = createClassElement('div', 'extras-icon')
-      const iconChar = createClassElement('i', ...icon)
+      const iconChar = document.createElement('i')
+      icon.forEach((className) => iconChar.classList.add(className))
+      iconSpace.appendChild(iconChar)
       const titleSpace = createClassElement('div', 'extras-title')
       titleSpace.textContent = title
       const dataSpace = createClassElement('div', 'extras-data')
@@ -88,9 +90,9 @@ const domManager = (() => {
 
     const extrasContainer = createClassElement('div', 'current-extras')
 
-    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', weatherInfo.windSpeed)
+    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', `${weatherInfo.windSpeed}mph`)
     const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', weatherInfo.humidity)
-    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', weatherInfo.feelsLike)
+    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', `${weatherInfo.feelsLike}°`)
     const rainChance = addGrid(['fa-solid', 'fa-cloud-sun-rain'], 'Chance of Rain', weatherInfo.rainChance)
     return extrasContainer.appendChildren(
       windGrid,
@@ -111,12 +113,12 @@ const domManager = (() => {
       'id': 'location-search',
       'minLength': 3,
     })
-    const searchButton = createTextElement('button', 'Search')
+    const searchButton = createClassElement('a', 'fa-solid', 'fa-magnifying-glass-location')
     return searchContainer.appendChildren(searchInput, searchButton)
   }
 
   function createCurrentForecast() {
-    const topForecast = createClassElement('div', 'top-forecast-container')
+    const topForecast = createClassElement('div', 'current-forecast-container')
 
     const headlineDetails = createClassElement('div', 'today-headlines')
     headlineDetails.appendChild(updateCurrentHeadlines())
@@ -129,8 +131,9 @@ const domManager = (() => {
       extraDetails)
   }
 
-  function createFutureForecast() {
-    // Continue Here
+  function createDailyForecast() {
+    const dailyForecast = createClassElement('div', 'daily-forecast-container')
+    return dailyForecast
   }
 
   function createMainLayout() {
@@ -138,6 +141,7 @@ const domManager = (() => {
     return main.appendChildren(
       createSearchBar(),
       createCurrentForecast(),
+      createDailyForecast(),
     )
   }
 
@@ -145,6 +149,11 @@ const domManager = (() => {
 
   function showPage() {
     document.body.append(createMainLayout())
+  }
+
+  function removeForecast() {
+    const currentForecast = document.querySelector('.top-forecast-container')
+    const dailyForecast = document.querySelector('')
   }
 
   return {
