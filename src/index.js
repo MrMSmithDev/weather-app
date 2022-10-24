@@ -1,4 +1,5 @@
 import './styles/style.css'
+import './assets/fontawesome-css/css/fontawesome.css'
 import './assets/fontawesome-css/css/solid.css'
 import dom from './utilities/domManager'
 
