@@ -26,15 +26,24 @@ module.exports = {
       },
       { // Images
         test: /\.(png|svg|jpeg|jpg|gif)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name].[ext]'
+        }
       },
       { // Webfonts
         test: /\.(woff|woff2|otf|ttf)$/i,
-        type: 'asset/resource'
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[ext]'
+        }
       },
       { // Favicon
         test: /\.ico$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'images/favicon/[name].[ext]'
+        }
       },
     ],
   },
