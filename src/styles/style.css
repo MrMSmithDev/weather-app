@@ -45,6 +45,7 @@ main {
     display: flex;
     gap: 10px;
     justify-content: center;
+    margin-bottom: 30px;
 }
 
 .search-container input[type=text] {
@@ -60,16 +61,14 @@ main {
     outline: none;
 }
 
-.search-container button {
-    background-color: transparent;
-    border: none;
-    font-family: 'lack', sans-serif;
-    font-size: 1.2rem;
+.search-container a {
+    font-size: 1.8rem;
+    margin-left: 10px;
 }
 
 /* Top forecast sections */
 
-.top-forecast-container {
+.current-forecast-container {
     display: flex;
     justify-content: space-between;
 }
@@ -95,14 +94,13 @@ main {
 .current-extras .extras-grid {
     column-gap: 10px;
     display: grid;
-    grid-template-columns: 30px 1fr;
+    grid-template-columns: 70px 1fr;
 }
 
 .extras-grid .extras-icon {
-    background-color: red;
+    font-size: 3rem;
     grid-area: 1 / 1 / 3 / 2;
     text-align: center;
-    width: 20px;
 }
 
 .extras-grid .extras-title {
