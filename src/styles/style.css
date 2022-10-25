@@ -146,3 +146,30 @@ main {
     height: 40px;
     flex-grow: 1;
 }
+
+/* loading styles */
+
+@keyframes loading-animation {
+    0% {
+        transform: rotate(0deg)
+    }
+    50% {
+        transform: rotate(359deg)
+    }
+}
+
+.loading-background {
+    background-color: rgba(165, 177, 187, 0.8);
+    bottom: 0;
+    display: grid;
+    left: 0;
+    place-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.loading-background i {
+    animation: loading-animation 2s infinite;
+    font-size: 5rem;
+}
