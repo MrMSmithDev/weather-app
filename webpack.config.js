@@ -28,21 +28,21 @@ module.exports = {
         test: /\.(png|svg|jpeg|jpg|gif)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'images/[name].[ext]'
+          filename: 'assets/images/[name].[ext]'
         }
       },
       { // Webfonts
         test: /\.(woff|woff2|otf|ttf)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'fonts/[name].[ext]'
+          filename: 'assets/fonts/[name].[ext]'
         }
       },
       { // Favicon
         test: /\.ico$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'images/favicon/[name].[ext]'
+          filename: 'assets/images/favicon/[name].[ext]'
         }
       },
     ],
