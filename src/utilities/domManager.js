@@ -108,8 +108,13 @@ const domManager = (() => {
       'minLength': 3,
     })
     const searchButton = createClassElement('a', 'fa-solid', 'fa-magnifying-glass-location')
+    return searchContainer.appendChildren(searchInput, searchButton)
+  }
+
+  function createUnitButton() {
+    const unitContainer = createClassElement('div', 'unit-container')
     const unitButton = createTextElement('button', 'Metric')
-    return searchContainer.appendChildren(searchInput, searchButton, unitButton)
+    return unitContainer.appendChildren(unitButton)
   }
 
   function createCurrentForecast() {
@@ -163,6 +168,7 @@ const domManager = (() => {
     const main = document.createElement('main')
     return main.appendChildren(
       createSearchBar(),
+      createUnitButton(),
       createForecastContainer(),
     )
   }
@@ -200,12 +206,9 @@ const domManager = (() => {
   }
 
   function updateDailyForecast(dailyWeatherArr) {
-    console.log(dailyWeatherArr)
     const allCards = document.querySelectorAll('.card')
     let i = 0
     dailyWeatherArr.forEach((weatherArr )=> {
-      console.log(weatherArr)
-      console.log(allCards[i])
       allCards[i].querySelector('.daily-date').textContent = `${weatherArr.day} ${weatherArr.date}`
       allCards[i].querySelector('.daily-temp').textContent = `${weatherArr.temp}°`
       allCards[i].querySelector('.daily-weather').textContent = weatherArr.weather.weatherType
