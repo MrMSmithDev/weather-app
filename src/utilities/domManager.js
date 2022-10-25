@@ -24,7 +24,7 @@ const domManager = (() => {
     Object.keys(attributeObject).forEach((key) => this.setAttribute(key, attributeObject[key]))
   }
 
-  function retrieveWeatherImage(weatherID) {
+  function retrieveWeatherIcon(weatherID) {
     if (weatherID.match(/^800/)) return 'fa-sun' // Change these to icon classes.
     if (weatherID.match(/^8/)) return 'fa-cloud'
     if (weatherID.match(/^(3|5)/)) return 'fa-cloud-rain'
@@ -108,7 +108,8 @@ const domManager = (() => {
       'minLength': 3,
     })
     const searchButton = createClassElement('a', 'fa-solid', 'fa-magnifying-glass-location')
-    return searchContainer.appendChildren(searchInput, searchButton)
+    const unitButton = createTextElement('button', 'Metric')
+    return searchContainer.appendChildren(searchInput, searchButton, unitButton)
   }
 
   function createCurrentForecast() {
@@ -199,16 +200,20 @@ const domManager = (() => {
   }
 
   function updateDailyForecast(dailyWeatherArr) {
+    console.log(dailyWeatherArr)
     const allCards = document.querySelectorAll('.card')
-    for (let i = 0; i < dailyWeatherArr.length; i += 1) {
-      allCards[i].querySelector('.daily-date').textContent = `${dailyWeatherArr[i].day} ${dailyWeatherArr[i].day}`
-      allCards[i].querySelector('.daily-temp').textContent = `${dailyWeatherArr[i].temp}°`
-      allCards[i].querySelector('.daily-weather').textContent = dailyWeatherArr[i].weather.weatherType
-      allCards[i].querySelector('.daily-icon i').remove()
-      allCards[i].querySelector('.daily-icon').appendChild(
-        createClassElement('i', 'fa-solid', retrieveWeatherImage(dailyWeatherArr[i].weather.weatherID)))
-    }
-
+    let i = 0
+    dailyWeatherArr.forEach((weatherArr )=> {
+      console.log(weatherArr)
+      console.log(allCards[i])
+      allCards[i].querySelector('.daily-date').textContent = `${weatherArr.day} ${weatherArr.date}`
+      allCards[i].querySelector('.daily-temp').textContent = `${weatherArr.temp}°`
+      allCards[i].querySelector('.daily-weather').textContent = weatherArr.weather.weatherType
+      if (allCards[i].querySelector('.daily-icon i')) allCards[i].querySelector('.daily-icon i').remove()
+      const weatherIcon = createClassElement('i', 'fa-solid', retrieveWeatherIcon(weatherArr.weather.weatherID))
+      allCards[i].querySelector('.daily-icon').appendChild(weatherIcon) 
+      i += 1
+    })
   }
 
   // Return functions
@@ -218,7 +223,6 @@ const domManager = (() => {
   }
 
   function updateForecast(newWeatherInfo) {
-    console.log(newWeatherInfo)
     updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0])
     updateDailyForecast(newWeatherInfo.forecast.slice(1))
 
