@@ -37,8 +37,8 @@ main {
     gap: 10px;
     flex-direction: column;
     height: 100vh;
-    padding: 20px 3%;
-    /* padding: 20px 40px; */
+    padding: 20px 2%;
+    overflow-y: auto;
     width: 100vw;
 }
 
@@ -46,7 +46,7 @@ main {
     display: flex;
     gap: 10px;
     justify-content: center;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .search-container input[type=text] {
@@ -67,9 +67,15 @@ main {
     margin-left: 10px;
 }
 
-.search-container button {
+.unit-container {
+    display: grid;
+    place-items: center;
+}
+
+.unit-container button {
     background-color: transparent;
     border: none;
+    font-family: 'lack', sans-serif;
 }
 
 .forecast-container {
@@ -140,19 +146,21 @@ main {
 }
 
 .daily-forecast-container .card-stack {
-    display: flex;
+    display: grid;
     gap: 20px;
-    justify-content: space-between;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-top: 20px;
 }
 
 .card-stack .card {
+    border-left: 1px solid var(--font-color);
     flex-grow: 1;
     padding: 10px; 
-    width: 25%;
+    width: 100%;
 }
 
 .card p {
-    font-size: 1.8rem
+    font-size: 2.4vh
 }
 
 .card h1 {
