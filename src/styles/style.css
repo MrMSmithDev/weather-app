@@ -116,7 +116,6 @@ main {
     grid-template-columns: 1fr 70px;
 }
 
-
 .extras-grid .extras-icon {
     display: grid;
     font-size: 3rem;
@@ -127,7 +126,7 @@ main {
 .extras-grid .extras-title,
 .extras-grid .extras-data {
     font-size: 2.8vh;
-    height: 2.8vh;
+    min-height: 2.8vh;
     text-align: right;
     width: 100%
 }
