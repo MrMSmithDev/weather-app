@@ -25,7 +25,7 @@ const domManager = (() => {
   }
 
   function retrieveWeatherIcon(weatherID) {
-    if (weatherID.match(/^800/)) return 'fa-sun' // Change these to icon classes.
+    if (weatherID.match(/^800/)) return 'fa-sun'
     if (weatherID.match(/^8/)) return 'fa-cloud'
     if (weatherID.match(/^(3|5)/)) return 'fa-cloud-rain'
     if (weatherID.match(/^2/)) return 'fa-cloud-bolt'
@@ -33,19 +33,13 @@ const domManager = (() => {
     return 'fa-smog'
   }
 
-  // Information div creation
-
-  const weatherInfo = {
-    location: 'Bristol',
-    country: 'United Kingdom',
-    day: 'Tuesday',
-    date: '24 Oct',
-    time: '09:45',
-    weather: 'Cloudy',
-    temp: 22,
-    feelsLike: 23,
-    windSpeed: 14,
-    humidity: '85%',
+  function retrieveWeatherImage(weatherID) {
+    if (weatherID.match(/^800/)) return './assets/images/clear-skies.jpg'
+    if (weatherID.match(/^8/)) return './assets/images/cloudy.jpg'
+    if (weatherID.match(/^(3|5)/)) return './assets/images/rain.jpg'
+    if (weatherID.match(/^2/)) return './assets/images/storm.jpg'
+    if (weatherID.match(/^6/)) return './assets/images/snow.jpg'
+    return './assets/images/fog.jpg'
   }
 
   // Initial DOM creation
@@ -53,12 +47,12 @@ const domManager = (() => {
   function createCurrentHeadlines() {
     const headlinesContainer = createClassElement('div', 'current-headlines')
 
-    const dateHeadline = createTextElement('p', `${weatherInfo.day} ${weatherInfo.date}`)
-    const timeHeadline = createTextElement('p', weatherInfo.time)
-    const locationHeadline = createTextElement('h1', weatherInfo.location)
-    const countryHeadline = createTextElement('p', weatherInfo.country)
-    const weatherHeadline = createTextElement('h1', weatherInfo.weather)
-    const tempHeadline = createTextElement('h1', `${weatherInfo.temp}°`)
+    const dateHeadline = document.createElement('p')
+    const timeHeadline = document.createElement('p')
+    const locationHeadline = document.createElement('h1')
+    const countryHeadline = document.createElement('p')
+    const weatherHeadline = document.createElement('h1')
+    const tempHeadline = document.createElement('h1')
     
     return headlinesContainer.appendChildren(
       dateHeadline,
@@ -86,9 +80,9 @@ const domManager = (() => {
 
     const extrasContainer = createClassElement('div', 'current-extras')
 
-    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', `${weatherInfo.windSpeed}mph`)
-    const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', weatherInfo.humidity)
-    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', `${weatherInfo.feelsLike}°`)
+    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', '')
+    const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', '')
+    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', '')
     return extrasContainer.appendChildren(
       windGrid,
       Humidity,
@@ -226,6 +220,7 @@ const domManager = (() => {
   }
 
   function updateForecast(newWeatherInfo, unitObject) {
+    document.body.style.backgroundImage = `url('${retrieveWeatherImage(newWeatherInfo.forecast[0].weather.weatherID.toString())}')`
     updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0], unitObject)
     updateDailyForecast(newWeatherInfo.forecast.slice(1), unitObject)
   }
