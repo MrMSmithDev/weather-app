@@ -33,7 +33,7 @@ const domManager = (() => {
   }
 
   function retrieveWeatherImage(weatherID) {
-    if (weatherID.match(/^800/)) return imageLibrary.sunny
+    if (weatherID.match(/^800/)) return imageLibrary.sunny // Change these to icon classes.
     if (weatherID.match(/^8/)) return imageLibrary.clouds
     if (weatherID.match(/^(3|5)/)) return imageLibrary.rain
     if (weatherID.match(/^2/)) return imageLibrary.storm
@@ -44,37 +44,41 @@ const domManager = (() => {
   // Information div creation
 
   const weatherInfo = {
-    name: 'Bristol',
+    location: 'Bristol',
+    country: 'United Kingdom',
     day: 'Tuesday',
     date: '24 Oct',
     time: '09:45',
-    weather: 'cloudy',
+    weather: 'Cloudy',
     temp: 22,
     feelsLike: 23,
     windSpeed: 14,
-    rainChance: '27%',
     humidity: '85%',
   }
 
-  function updateCurrentHeadlines() {
+  // Initial DOM creation
+
+  function createCurrentHeadlines() {
     const headlinesContainer = createClassElement('div', 'current-headlines')
 
     const dateHeadline = createTextElement('p', `${weatherInfo.day} ${weatherInfo.date}`)
     const timeHeadline = createTextElement('p', weatherInfo.time)
-    const locationHeadline = createTextElement('h1', weatherInfo.name)
-    const weatherHeadline = createTextElement('p', weatherInfo.weather)
+    const locationHeadline = createTextElement('h1', weatherInfo.location)
+    const countryHeadline = createTextElement('p', weatherInfo.country)
+    const weatherHeadline = createTextElement('h1', weatherInfo.weather)
     const tempHeadline = createTextElement('h1', `${weatherInfo.temp}°`)
     
     return headlinesContainer.appendChildren(
       dateHeadline,
       timeHeadline,
       locationHeadline,
+      countryHeadline,
       weatherHeadline,
       tempHeadline,
     )
   }
 
-  function updateCurrentExtras() {
+  function createCurrentExtras() {
     const addGrid = (icon, title, data) => {
       const grid = createClassElement('div', 'extras-grid')
       const iconSpace = createClassElement('div', 'extras-icon')
@@ -93,12 +97,10 @@ const domManager = (() => {
     const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', `${weatherInfo.windSpeed}mph`)
     const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', weatherInfo.humidity)
     const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', `${weatherInfo.feelsLike}°`)
-    const rainChance = addGrid(['fa-solid', 'fa-cloud-sun-rain'], 'Chance of Rain', weatherInfo.rainChance)
     return extrasContainer.appendChildren(
       windGrid,
       Humidity,
       feelsLike,
-      rainChance
     )
   }
 
@@ -121,10 +123,10 @@ const domManager = (() => {
     const topForecast = createClassElement('div', 'current-forecast-container')
 
     const headlineDetails = createClassElement('div', 'today-headlines')
-    headlineDetails.appendChild(updateCurrentHeadlines())
+    headlineDetails.appendChild(createCurrentHeadlines())
 
     const extraDetails = createClassElement('div', 'today-extras')
-    extraDetails.appendChild(updateCurrentExtras())
+    extraDetails.appendChild(createCurrentExtras())
 
     return topForecast.appendChildren(
       headlineDetails,
@@ -145,19 +147,52 @@ const domManager = (() => {
     )
   }
 
+  // Info update functions
+
+  function updateCurrentForecast(location, country, time, currentWeatherInfo) {
+    console.log(currentWeatherInfo)
+    const updateHeadlines = () => {
+      const headlineHeadings = document.querySelectorAll('.current-headlines >  h1')
+      headlineHeadings[0].textContent = location
+      headlineHeadings[1].textContent = currentWeatherInfo.weather.weatherType
+      headlineHeadings[2].textContent = `${currentWeatherInfo.temp}°`
+
+      const headlineParas = document.querySelectorAll('.current-headlines > p')
+      headlineParas[0].textContent = `${currentWeatherInfo.date}` // date
+      headlineParas[1].textContent = time // time
+      headlineParas[2].textContent = country   // weather
+    }
+
+    const updateExtras = () => {
+      const allDataCells = document.querySelectorAll('.extras-grid .extras-data')
+      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}mph` // wind speed
+      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°` // humidity
+      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°` // feels like
+    }
+
+    updateHeadlines()
+    updateExtras()
+  }
+
+  function updateFutureForecast () {
+
+  }
+
   // Return functions
 
   function showPage() {
     document.body.append(createMainLayout())
   }
 
-  function removeForecast() {
-    const currentForecast = document.querySelector('.top-forecast-container')
-    const dailyForecast = document.querySelector('')
+  function updateForecast(newWeatherInfo) {
+    console.log(newWeatherInfo)
+    updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0])
+
   }
 
   return {
-    showPage
+    showPage,
+    updateForecast,
   }
 
 })()
