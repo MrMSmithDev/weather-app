@@ -1,3 +1,7 @@
+:root {
+    --font-color: rgb(245, 245, 245);
+}
+
 /* css resets */
 
 *, html, body, a, ul {
@@ -11,236 +15,185 @@
 }
 
 @font-face {
-    font-family: "moonless";
-    src: url('../assets/webfonts/moonlesssc-regular_1-webfont.woff2') format('woff2'),
-         url('../assets/webfonts/moonlesssc-regular_1-webfont.woff') format('woff');
+    font-family: "lack";
+    src: url('../assets/webfonts/lack-regular-webfont.woff2') format('woff2'),
+         url('../assets/webfonts/lack-regular-webfont.woff') format('woff');
     font-style: normal;
     font-weight: normal;
 }
 
 body {
-    font-family: "moonless", sans-serif;
-    min-height: 100vh; 
-}
-
-.layout-wrapper {
-    display: flex;
-    min-height: 100vh;
-}
-
-main {
-    align-items: center;
     background-image: url('../assets/images/background.jpg');
     background-position: center;
     background-size: cover;
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    padding: 40px;
-    width: 100%;
+    font-family: "lack", sans-serif;
+    min-height: 100vh; 
 }
 
-/* Nav section */
-
-nav {
-    background-color: #B73E3E;
+main {
+    background-color: rgba(128, 138, 146, 0.6);
+    color: var(--font-color);
     display: flex;
+    gap: 10px;
     flex-direction: column;
-    gap: 10px;
-    min-width: 350px;
-    padding: 10px;
+    height: 100vh;
+    padding: 20px 2%;
+    overflow-y: auto;
+    width: 100vw;
 }
 
-header {
-    display: grid;
-    font-size: 1.8rem;
-    padding: 10px;
-    place-items: center;
-}
-
-input[type=text] {
-    border: 1px solid black;
-    border-radius: 20px;
-    font-size: 1.1rem;
-    padding: 5px 10px;
-    width: 100%;
-}
-
-.button-container {
+.search-container {
     display: flex;
     gap: 10px;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
-.button-container button {
-    flex-grow: 1;
-    width: 40%;
+.search-container input[type=text] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 3px solid var(--font-color);
+    font-size: 1.2rem;
+    padding: 3px;
+    width: 300px;
 }
 
-button {
-    background-color: rgb(255, 231, 204);
-    border: 1px solid black;
-    border-radius: 5px;
-    font-family: "moonless", sans-serif;
-    font-size: 1.3rem;
-    padding: 3px 13px;
-
-    transition: ease-in-out all .1s;
-    -webkit-transition: ease-in-out all .1s;
-    -moz-transition: ease-in-out all .1s;
-    -o-transition: ease-in-out all .1s;
+.search-container input[type=text]:focus {
+    outline: none;
 }
 
-button:hover {
-    background-color: rgb(185, 161, 134);
-}
-
-/* Startup section */
-
-.startup-container {
-    display: grid;
-    height: 100%;
-    place-items: center;
-    text-align: center;
-    width: 100%;
-}
-
-.startup-container .search-button {
+.search-container a {
+    font-size: 1.8rem;
     margin-left: 10px;
 }
 
-.startup-container input[type=text] {
-    width: 350px;
+.unit-container {
+    display: grid;
+    place-items: center;
 }
 
-/* Forecast section */
+.unit-container button {
+    background-color: transparent;
+    border: none;
+    font-family: 'lack', sans-serif;
+}
 
 .forecast-container {
-    flex-grow: 1;
-}
-
-.current-forecast-container {
-    background-color: rgba(255, 185, 104, 1);
-    border-radius: 10px;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    display: flex;
-    height: 400px;
-}
-
-.current-forecast-image {
-    background-position: center;
-    background-size: cover;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    height: 100%;
-    width: 65%;
-}
-
-.current-forecast-info {
     display: flex;
     flex-direction: column;
-    font-size: 2rem;
-    padding: 20px;
+    height: 100%;
+    justify-content: space-between;
 }
 
-.current-forecast-info .para-location {
-    font-size: 4rem;
+/* Top forecast sections */
+
+.current-forecast-container {
+    display: flex;
+    justify-content: space-between;
 }
 
-.current-forecast-info .para-temp {
-    font-size: 3.2rem;
+.current-headlines p {
+    font-size: 2.8vh;
 }
 
-.current-forecast-info .para-weather {
-    margin-top: 10px;
+.current-headlines p:nth-of-type(2) {
+    font-size: 2vh;
 }
 
-.forecast-card-stack {
+.current-headlines h1 {
+    font-size: 5vh;
+}
+
+.current-extras {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.current-extras .extras-grid {
+    column-gap: 10px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    grid-template-columns: 1fr 70px;
+}
+
+.extras-grid .extras-icon {
+    display: grid;
+    font-size: 3rem;
+    grid-area: 1 / 2 / 3 / 3;
+    place-items: center;
+}
+
+.extras-grid .extras-title,
+.extras-grid .extras-data {
+    font-size: 2.8vh;
+    min-height: 2.8vh;
+    text-align: right;
+    width: 100%
+}
+
+.extras-grid .extras-title {
+    grid-area: 1 / 1/ 2 / 2; 
+}
+
+.extras-grid .extras-data {
+    grid-area: 2 / 1 / 2 / 2;
+}
+
+/* Bottom forecast sections */
+
+.daily-forecast-container {
+    width: 100%;
+}
+
+.daily-forecast-container .card-stack {
+    display: grid;
     gap: 20px;
-    margin: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    margin-top: 20px;
 }
 
-.forecast-card {
-    background-color: rgba(255, 185, 104, 1);
-    border-radius: 10px;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    height: 300px;
+.card-stack .card {
+    border-left: 1px solid var(--font-color);
+    flex-grow: 1;
+    padding: 10px; 
+    width: 100%;
 }
 
-.card-image {
-    background-position: center;
-    background-size: cover;
-    height: 40%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+.card p {
+    font-size: 2.4vh
 }
 
-.forecast-card .card-info {
-    padding: 10px;
+.card h1 {
+    font-size: 2.5rem
 }
 
-.forecast-card .para-date {
-    font-size: 2rem;
+.card i {
+    font-size: 4rem
 }
 
-.forecast-card p {
-    font-size: 1.5rem;
-}
+/* loading styles */
 
-/* Loading */
-
-@keyframes rotating-animation {
+@keyframes loading-animation {
     0% {
-        transform: rotate(0deg);
+        transform: rotate(0deg)
     }
-    99% {
+    50% {
         transform: rotate(359deg)
     }
 }
 
-.loading-container {
-    background-color: rgba(100, 100, 100, 0.5);
-    border-radius: 10px;
+.loading-background {
+    background-color: rgba(165, 177, 187, 0.6);
+    bottom: 0;
     display: grid;
-    height: 100%;
+    left: 0;
     place-items: center;
-    width: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
-.loading-icon {
-    background-image: url('../assets/images/loading-icon.png');
-    background-position: center;
-    background-size: cover;
-    height: 200px;
-    width: 200px;
-
-    animation: rotating-animation 2s infinite linear;
-}
-
-/* Modals */
-
-.modal {
-    background-color: #B73E3E;
-    border-radius: 10px;
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    color: rgb(255, 231, 204);
-    font-size: 2rem;
-    padding: 20px;
-    text-align: center;
-}
-
-.modal p:first-of-type {
-    margin-bottom: 10px;
-}
-
-@media screen and (max-width: 810px) {
-    .layout-wrapper {
-        flex-direction: column;
-    }
-
-    nav {
-        position: sticky;
-        top: 0;
-    }
+.loading-background i {
+    animation: loading-animation 2.5s infinite;
+    font-size: 5rem;
 }

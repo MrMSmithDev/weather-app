@@ -1,13 +1,5 @@
 /* eslint-disable no-unused-vars */
 const domManager = (() => {
-  const imageLibrary = {
-    clouds: 'assets/images/cloud.jpg',
-    fog: 'assets/images/fog.jpeg',
-    rain: 'assets/images/rain.jpeg',
-    snow: 'assets/images/snow.jpg',
-    sunny: 'assets/images/sunny.jpeg',
-    storm: 'assets/images/storm.jpeg',
-  }
 
   // Utility functions
 
@@ -32,274 +24,220 @@ const domManager = (() => {
     Object.keys(attributeObject).forEach((key) => this.setAttribute(key, attributeObject[key]))
   }
 
+  function retrieveWeatherIcon(weatherID) {
+    if (weatherID.match(/^800/)) return 'fa-sun'
+    if (weatherID.match(/^8/)) return 'fa-cloud'
+    if (weatherID.match(/^(3|5)/)) return 'fa-cloud-rain'
+    if (weatherID.match(/^2/)) return 'fa-cloud-bolt'
+    if (weatherID.match(/^6/)) return 'fa-snowflake'
+    return 'fa-smog'
+  }
+
   function retrieveWeatherImage(weatherID) {
-    if (weatherID.match(/^800/)) return imageLibrary.sunny
-    if (weatherID.match(/^8/)) return imageLibrary.clouds
-    if (weatherID.match(/^(3|5)/)) return imageLibrary.rain
-    if (weatherID.match(/^2/)) return imageLibrary.storm
-    if (weatherID.match(/^6/)) return imageLibrary.snow
-    return imageLibrary.fog
+    if (weatherID.match(/^800/)) return './assets/images/clear-skies.jpg'
+    if (weatherID.match(/^8/)) return './assets/images/cloudy.jpg'
+    if (weatherID.match(/^(3|5)/)) return './assets/images/rain.jpg'
+    if (weatherID.match(/^2/)) return './assets/images/storm.jpg'
+    if (weatherID.match(/^6/)) return './assets/images/snow.jpg'
+    return './assets/images/fog.jpg'
+  }
+
+  // Initial DOM creation
+
+  function createCurrentHeadlines() {
+    const headlinesContainer = createClassElement('div', 'current-headlines')
+
+    const dateHeadline = document.createElement('p')
+    const timeHeadline = document.createElement('p')
+    const locationHeadline = document.createElement('h1')
+    const countryHeadline = document.createElement('p')
+    const weatherHeadline = document.createElement('h1')
+    const tempHeadline = document.createElement('h1')
+    
+    return headlinesContainer.appendChildren(
+      dateHeadline,
+      timeHeadline,
+      locationHeadline,
+      countryHeadline,
+      weatherHeadline,
+      tempHeadline,
+    )
+  }
+
+  function createCurrentExtras() {
+    const addGrid = (icon, title, data) => {
+      const grid = createClassElement('div', 'extras-grid')
+      const iconSpace = createClassElement('div', 'extras-icon')
+      const iconChar = document.createElement('i')
+      icon.forEach((className) => iconChar.classList.add(className))
+      iconSpace.appendChild(iconChar)
+      const titleSpace = createClassElement('div', 'extras-title')
+      titleSpace.textContent = title
+      const dataSpace = createClassElement('div', 'extras-data')
+      dataSpace.textContent = data
+      return grid.appendChildren(iconSpace, titleSpace, dataSpace)
+    }
+
+    const extrasContainer = createClassElement('div', 'current-extras')
+
+    const windGrid = addGrid(['fa-solid', 'fa-wind'], 'Wind Speed', '')
+    const Humidity = addGrid(['fa-solid', 'fa-droplet'], 'Humidity', '')
+    const feelsLike = addGrid(['fa-solid', 'fa-temperature-low'], 'Feels Like', '')
+    return extrasContainer.appendChildren(
+      windGrid,
+      Humidity,
+      feelsLike,
+    )
   }
 
   // Dom creation functions
 
-  const layoutWrapper = createClassElement('div', 'layout-wrapper')
-  document.body.appendChild(layoutWrapper)
-
-  function createHeaderElement() {
-    const header = document.createElement('header')
-    const logo = createTextElement('h1', 'Whatever\'s the Weather')
-    header.appendChild(logo)
-    return header
-  }
-
-  function createSearchBar(inputName) {
-    const locationInput = document.createElement('input')
-    locationInput.setAttributes({
+  function createSearchBar() {
+    const searchContainer = createClassElement('div', 'search-container')
+    const searchInput = document.createElement('input')
+    searchInput.setAttributes({
       'type': 'text',
-      'name': inputName,
-      'id': inputName,
-      'placeholder': 'City, Town or Village',
-      'minLength': 2,
-      'maxLength': 100,
-      'required': ''
+      'name': 'location-search',
+      'id': 'location-search',
+      'minLength': 3,
     })
-    return locationInput
+    const searchButton = createClassElement('a', 'fa-solid', 'fa-magnifying-glass-location')
+    return searchContainer.appendChildren(searchInput, searchButton)
   }
 
-  function createButtonContainer() {
-    const buttonContainer = createClassElement('div', 'button-container')
-    const unitButton = createTextElement('button', 'Metric')
-    unitButton.classList.add('unit-button')
-    const searchButton = createTextElement('button', 'search')
-    searchButton.classList.add('search-button')
-    return buttonContainer.appendChildren(unitButton, searchButton)
+  function createUnitButton() {
+    const unitContainer = createClassElement('div', 'unit-container')
+    const unitButton = createTextElement('button', 'METRIC')
+    return unitContainer.appendChildren(unitButton)
   }
 
-  function createSearchInput() {
-    const label = document.createElement('label')
-    label.setAttribute('for', 'nav-location-input')
-    const locationInput = createSearchBar('nav-location-input')
-    label.appendChild(locationInput)
-    const buttonContainer = createButtonContainer()
+  function createCurrentForecast() {
+    const topForecast = createClassElement('div', 'current-forecast-container')
 
-    return [label, buttonContainer]
+    const headlineDetails = createClassElement('div', 'today-headlines')
+    headlineDetails.appendChild(createCurrentHeadlines())
+
+    const extraDetails = createClassElement('div', 'today-extras')
+    extraDetails.appendChild(createCurrentExtras())
+
+    return topForecast.appendChildren(
+      headlineDetails,
+      extraDetails)
   }
 
-  function createForecastInfo(location, weatherForecast, unit) {
-    const forecastInfo = createClassElement('div', 'current-forecast-info')
+  function createDailyForecast() {
+    const createDailyCard = () => {
+      const card = createClassElement('div', 'card')
+      const dailyDate = createClassElement('p', 'daily-date')
+      const dailyTemp = createClassElement('h1', 'daily-temp')
+      const dailyWeather = createClassElement('p', 'daily-weather')
+      const dailyIcon = createClassElement('div', 'daily-icon')
 
-    const paraLocation = createClassElement('p', 'para-location')
-    const paraDate = createClassElement('p', 'para-date')
-    const paraTemperature = createClassElement('p', 'para-temp')
-    const paraWeather = createClassElement('p', 'para-weather')
-    const paraFeelsLike = createClassElement('p', 'para-feels-like')
-    const paraWindSpeed = createClassElement('p', 'para-wind-speed')
-    
-    paraLocation.textContent = location
-    paraDate.textContent = `${weatherForecast.day} ${weatherForecast.date}`
-    paraWeather.textContent = weatherForecast.weather.weatherType
-
-    if (unit === 'metric') {
-      paraTemperature.textContent = `${weatherForecast.temp}°C`
-      paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°C`
-      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed}m/s`
-    } else {
-      paraTemperature.textContent = `${weatherForecast.temp}°F`
-      paraFeelsLike.textContent = `Feels like: ${weatherForecast.feelsLike}°F`
-      paraWindSpeed.textContent = `Wind speed: ${weatherForecast.windSpeed}mph`
-    }
-
-    return forecastInfo.appendChildren(
-      paraLocation,
-      paraDate,
-      paraTemperature,
-      paraWeather,
-      paraFeelsLike,
-      paraWindSpeed
-    )
-  }
-
-  // Update following function with suitable object access notation
-  function createMainForecast(location, weatherForecast, unit) {
-    const wrapperDiv = createClassElement('div', 'current-forecast-container')
-
-    const forecastImage = createClassElement('div', 'current-forecast-image')
-    forecastImage.style.backgroundImage = `url('${retrieveWeatherImage(weatherForecast.weather.weatherID.toString())}')`
-    const forecastInfo = createForecastInfo(location, weatherForecast, unit)
-
-    return wrapperDiv.appendChildren(
-      forecastImage,
-      forecastInfo)
-  }
-
-  // Update following function with suitable object access notation
-  function createCardDeck(weather, units) {
-    const createCardInfo = (day) => {
-      const cardInfo = createClassElement('div', 'card-info')
-      const paraDate = createClassElement('p', 'para-date')
-      const paraWeather = createClassElement('p', 'para-weather')
-      const paraTemperature = createClassElement('p', 'para-temperature')
-      const paraFeelsLike = createClassElement('p', 'para-feels-like')
-      const paraWindSpeed = createClassElement('p', 'paraWindSpeed')
-
-      paraDate.textContent = `${day.day} ${day.date}`
-      paraWeather.textContent = day.weather.weatherType
-
-      if (units === 'metric') {
-        paraTemperature.textContent = `${day.temp}°C`
-        paraFeelsLike.textContent = `Feels like: ${day.feelsLike}°C`
-        paraWindSpeed.textContent = `Wind speed: ${day.windSpeed}m/s`
-      } else {
-        paraTemperature.textContent = `${day.temp}°F`
-        paraFeelsLike.textContent = `Feels like: ${day.feelsLike}°F`
-        paraWindSpeed.textContent = `Wind speed: ${day.windSpeed}mph`
-      }
-
-      return cardInfo.appendChildren(
-        paraDate,
-        paraWeather,
-        paraTemperature,
-        paraFeelsLike,
-        paraWindSpeed
+      return card.appendChildren(
+        dailyDate,
+        dailyTemp,
+        dailyWeather,
+        dailyIcon
       )
-         
     }
 
-    const createForecastCard = (weatherInfo, containerElement) => {
-      weatherInfo.forEach((day) => {
-        console.log(day)
-        const card = createClassElement('div', 'forecast-card')
-        const cardImage = createClassElement('div', 'card-image')
-        cardImage.style.backgroundImage = `url('${retrieveWeatherImage(day.weather.weatherID.toString())}')`
-        const cardInfo = createCardInfo(day)
-
-        card.appendChildren(
-          cardImage,
-          cardInfo,
-        )
-        containerElement.appendChild(card)
-      })
+    const dailyForecast = createClassElement('div', 'daily-forecast-container')
+    const dailyStack = createClassElement('div', 'card-stack')
+    for (let i = 0; i < 4; i += 1) {
+      const card = createDailyCard()
+      dailyStack.appendChild(card)
     }
-
-    const cardStack = createClassElement('div', 'forecast-card-stack')
-    console.log(weather)
-    createForecastCard(weather, cardStack)
-    return cardStack
+    return dailyForecast.appendChildren(dailyStack)
   }
 
-  function createMainElement() {
-    return document.createElement('main')
-  }
-
-  function createNavElement() {
-    const navElement = document.createElement('nav')
-    const header = createHeaderElement()
-    const locationSearch = createSearchInput()
-    return navElement.appendChildren(header, locationSearch[0], locationSearch[1])
-  }
-
-  function createStartupPage() {
-    const startupContainer = createClassElement('div', 'startup-container')
-    const startupImage = document.createElement('div')
-    const startupInput = createSearchBar('startup-location-input')
-    const searchButton = createTextElement('button', 'Search')
-    searchButton.classList.add('search-button')
-    startupImage.appendChildren(startupInput, searchButton)
-    startupContainer.appendChild(startupImage)
-    return startupContainer
-  }
-
-  function createForecastContainer(weatherInfo, units) {
+  function createForecastContainer() {
     const forecastContainer = createClassElement('div', 'forecast-container')
     return forecastContainer.appendChildren(
-      createMainForecast(weatherInfo.name, weatherInfo.forecast[0], units),
-      createCardDeck(weatherInfo.forecast.slice(1), units),
+      createCurrentForecast(),
+      createDailyForecast()
     )
   }
 
-  function createLoadingContainer() {
-    const loadingContainer = createClassElement('div', 'loading-container')
-    const loadingIcon = createClassElement('div', 'loading-icon')
-    loadingContainer.append(loadingIcon)
-    return loadingContainer
+  function createMainLayout() {
+    const main = document.createElement('main')
+    return main.appendChildren(
+      createSearchBar(),
+      createUnitButton(),
+      createForecastContainer(),
+    )
   }
 
-  function createErrorModal() {
-    const modal = createClassElement('div', 'modal')
-    const errorLineOne = createTextElement('p', 'We could not find a location with the information you have entered')
-    const errorLineTwo = createTextElement('p', 'Please check your spelling or coordinates and try again')
-    return modal.appendChildren(errorLineOne, errorLineTwo)
+  function createLoading() {
+    const background = createClassElement('div', 'loading-background')
+    const loadingIcon = createClassElement('i', 'fa-solid', 'fa-circle-notch')
+    return background.appendChildren(loadingIcon)
   }
 
-  function showDashboard() {
-    layoutWrapper.appendChild(createNavElement())
-    layoutWrapper.appendChild(createMainElement())
-  }
+  // Info update functions
 
-  function showStartupMain() {
-    let main = document.querySelector('main')
-    if (!main) {
-      main = document.createElement('main')
-      layoutWrapper.appendChild(main)
+  function updateCurrentForecast(location, country, time, currentWeatherInfo, units) {
+    const updateHeadlines = () => {
+      const headlineHeadings = document.querySelectorAll('.current-headlines >  h1')
+      headlineHeadings[0].textContent = location
+      headlineHeadings[1].textContent = currentWeatherInfo.weather.weatherType
+      headlineHeadings[2].textContent = `${currentWeatherInfo.temp}°${units.temp}`
+
+      const headlineParas = document.querySelectorAll('.current-headlines > p')
+      headlineParas[0].textContent = `${currentWeatherInfo.day} ${currentWeatherInfo.date}`
+      headlineParas[1].textContent = time
+      headlineParas[2].textContent = country
     }
-    main.appendChild(createStartupPage())
+
+    const updateExtras = () => {
+      const allDataCells = document.querySelectorAll('.extras-grid .extras-data')
+      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}${units.speed}`
+      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°${units.temp}`
+      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°${units.temp}`
+    }
+
+    updateHeadlines()
+    updateExtras()
+  }
+
+  function updateDailyForecast(dailyWeatherArr, units) {
+    const allCards = document.querySelectorAll('.card')
+    let i = 0
+    dailyWeatherArr.forEach((weatherArr )=> {
+      allCards[i].querySelector('.daily-date').textContent = `${weatherArr.day} ${weatherArr.date}`
+      allCards[i].querySelector('.daily-temp').textContent = `${weatherArr.temp}°${units.temp}`
+      allCards[i].querySelector('.daily-weather').textContent = weatherArr.weather.weatherType
+      if (allCards[i].querySelector('.daily-icon i')) allCards[i].querySelector('.daily-icon i').remove()
+      const weatherIcon = createClassElement('i', 'fa-solid', retrieveWeatherIcon(weatherArr.weather.weatherID))
+      allCards[i].querySelector('.daily-icon').appendChild(weatherIcon) 
+      i += 1
+    })
   }
 
   // Return functions
 
-  function initHome() {
-    showDashboard()
-    showStartupMain()
+  function createPage() {
+    document.body.append(createMainLayout())
   }
 
-  function showCurrentForecast(weatherInfo, unitInfo) {
-    const units = unitInfo || 'metric'
-
-    let main = document.querySelector('main')
-    if (!main) {
-      main = document.createElement('main')
-      layoutWrapper.appendChild(main)
-    }
-    main.appendChild(createForecastContainer(weatherInfo, units))
+  function updateForecast(newWeatherInfo, unitObject) {
+    document.body.style.backgroundImage = `url('${retrieveWeatherImage(newWeatherInfo.forecast[0].weather.weatherID.toString())}')`
+    updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0], unitObject)
+    updateDailyForecast(newWeatherInfo.forecast.slice(1), unitObject)
   }
 
   function showLoading() {
-    let main = document.querySelector('main')
-    if (!main) {
-      main = document.createElement('main')
-      layoutWrapper.appendChild(main)
-    }
-    main.appendChild(createLoadingContainer())
+    document.querySelector('main').appendChild(createLoading())
   }
 
-  function showErrorModal() {
-    let main = document.querySelector('main')
-    if (!main) {
-      main = document.createElement('main')
-      layoutWrapper.appendChild(main)
-    }
-    main.appendChild(createErrorModal())
-  }
-
-  function updateUnitText(newUnits) {
-    const unitButtons = document.querySelectorAll('.unit-button')
-    unitButtons.forEach(button => {
-      button.textContent = newUnits
-    })
-  }
-
-  function removeMain() {
-    document.querySelector('main').remove()
+  function removeLoading() {
+    document.querySelector('.loading-background').remove()
   }
 
   return {
-    initHome,
-    showCurrentForecast,
+    createPage,
+    updateForecast,
     showLoading,
-    showErrorModal,
-    updateUnitText,
-    removeMain,
+    removeLoading,
   }
 
 })()

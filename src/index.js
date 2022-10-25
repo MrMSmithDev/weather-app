@@ -1,44 +1,41 @@
 import './styles/style.css'
-import api from './utilities/apiManager'
+import './assets/fontawesome-css/css/fontawesome.css'
+import './assets/fontawesome-css/css/solid.css'
 import dom from './utilities/domManager'
+import api from './utilities/apiManager'
 
-async function showForecast(inputBar) {
-  dom.removeMain()
+
+dom.createPage()
+const input = document.querySelector('input')
+
+async function showForecast(searchTerm) {
+  searchTerm = input.value || searchTerm
   dom.showLoading()
   try {
-    const weatherData = await api.makeLocationSearch(inputBar.value)
-    dom.removeMain()
-    dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+    const weatherData = await api.makeLocationSearch(searchTerm)
+    input.value = ''
+    dom.updateForecast(weatherData, api.getCurrentUnits())
   } catch(err) {
-    dom.removeMain()
-    dom.showErrorModal()
+    console.log(err)
+    // dom.showErrorModal()
+  }
+  finally {
+    dom.removeLoading()
   }
 }
 
-dom.initHome()
+// showForecast('London')
 
-const navSearchBar = document.querySelector('#nav-location-input')
-const navSearchButton = document.querySelector('nav .search-button')
-navSearchButton.addEventListener('click', () => {
-  showForecast(navSearchBar)
+const searchButton = document.querySelector('.search-container a')
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    showForecast()
+  }
 })
+searchButton.addEventListener('click', showForecast)
 
-const startupSearchBar = document.querySelector('#startup-location-input')
-const startupSearchButton = document.querySelector('.startup-container .search-button')
-startupSearchButton.addEventListener('click', () => {
-  showForecast(startupSearchBar)
-})
-
-const unitButton = document.querySelector('.unit-button')
+const unitButton = document.querySelector('.unit-container button')
 unitButton.addEventListener('click', () => {
-  const newUnits = api.changeApiUnits()
-  dom.updateUnitText(newUnits)
+  unitButton.textContent = api.changeApiUnits().toUpperCase()
+  showForecast(document.querySelector('.current-headlines h1').textContent)
 })
-
-// async function initialForecastTest() {
-//   const weatherData = await api.makeLocationSearch('Bristol')
-//   dom.removeMain()
-//   dom.showCurrentForecast(weatherData, api.getCurrentUnits())
-// }
-
-// initialForecastTest()
