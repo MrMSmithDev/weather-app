@@ -11,9 +11,9 @@ const input = document.querySelector('input')
 async function showForecast() {
   try {
     const weatherData = await api.makeLocationSearch(input.value)
+    input.value = ''
     console.log(weatherData)
-    // dom.removeMain()
-    // dom.showCurrentForecast(weatherData, api.getCurrentUnits())
+    dom.updateForecast(weatherData)
   } catch(err) {
     console.log(err)
     // dom.removeMain()
