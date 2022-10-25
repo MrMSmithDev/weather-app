@@ -196,7 +196,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \******************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"2183e701601ebf91b856.jpg\";\n\n//# sourceURL=webpack://weather-app/./src/assets/images/background.jpg?");
+eval("module.exports = __webpack_require__.p + \"images/background..jpg\";\n\n//# sourceURL=webpack://weather-app/./src/assets/images/background.jpg?");
 
 /***/ }),
 
@@ -206,7 +206,7 @@ eval("module.exports = __webpack_require__.p + \"2183e701601ebf91b856.jpg\";\n\n
   \********************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"f1c3f82d15fc1212c5ef.png\";\n\n//# sourceURL=webpack://weather-app/./src/assets/images/loading-icon.png?");
+eval("module.exports = __webpack_require__.p + \"images/loading-icon..png\";\n\n//# sourceURL=webpack://weather-app/./src/assets/images/loading-icon.png?");
 
 /***/ }),
 
@@ -216,7 +216,7 @@ eval("module.exports = __webpack_require__.p + \"f1c3f82d15fc1212c5ef.png\";\n\n
   \***************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"bd684b1b0a7e67aa7cc5.woff\";\n\n//# sourceURL=webpack://weather-app/./src/assets/webfonts/moonlesssc-regular_1-webfont.woff?");
+eval("module.exports = __webpack_require__.p + \"fonts/moonlesssc-regular_1-webfont..woff\";\n\n//# sourceURL=webpack://weather-app/./src/assets/webfonts/moonlesssc-regular_1-webfont.woff?");
 
 /***/ }),
 
@@ -226,7 +226,7 @@ eval("module.exports = __webpack_require__.p + \"bd684b1b0a7e67aa7cc5.woff\";\n\
   \****************************************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = __webpack_require__.p + \"bd8496afcdb80a4ca886.woff2\";\n\n//# sourceURL=webpack://weather-app/./src/assets/webfonts/moonlesssc-regular_1-webfont.woff2?");
+eval("module.exports = __webpack_require__.p + \"fonts/moonlesssc-regular_1-webfont..woff2\";\n\n//# sourceURL=webpack://weather-app/./src/assets/webfonts/moonlesssc-regular_1-webfont.woff2?");
 
 /***/ })
 
