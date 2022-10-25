@@ -24,7 +24,7 @@ async function showForecast(searchTerm) {
   }
 }
 
-// showForecast('London')
+showForecast('London')
 
 const searchButton = document.querySelector('.search-container a')
 input.addEventListener('keydown', (event) => {
