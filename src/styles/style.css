@@ -132,7 +132,17 @@ main {
 
 .daily-forecast-container {
     background-color: red;
-    display: grid;
+    width: 100%;
+}
+
+.daily-forecast-container .card-stack {
+    display: flex;
     gap: 20px;
-    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+}
+
+.card-stack .card {
+    background-color: green;
+    height: 40px;
+    flex-grow: 1;
 }
