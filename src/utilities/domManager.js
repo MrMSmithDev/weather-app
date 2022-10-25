@@ -134,23 +134,49 @@ const domManager = (() => {
   }
 
   function createDailyForecast() {
+    const createDailyCard = () => {
+      const card = createClassElement('div', 'card')
+      const dailyDate = createClassElement('p', 'daily-date')
+      const dailyTemp = createClassElement('h1', 'daily-temp')
+      const dailyWeather = createClassElement('p', 'daily-weather')
+      const dailyIcon = createClassElement('div', 'daily-icon')
+
+      return card.appendChildren(
+        dailyDate,
+        dailyTemp,
+        dailyWeather,
+        dailyIcon
+      )
+    }
+
     const dailyForecast = createClassElement('div', 'daily-forecast-container')
-    return dailyForecast
+    const dailyStack = createClassElement('div', 'card-stack')
+    for (let i = 0; i < 4; i += 1) {
+      const card = createDailyCard()
+      dailyStack.appendChild(card)
+    }
+    return dailyForecast.appendChildren(dailyStack)
+  }
+
+  function createForecastContainer() {
+    const forecastContainer = createClassElement('div', 'forecast-container')
+    return forecastContainer.appendChildren(
+      createCurrentForecast(),
+      createDailyForecast()
+    )
   }
 
   function createMainLayout() {
     const main = document.createElement('main')
     return main.appendChildren(
       createSearchBar(),
-      createCurrentForecast(),
-      createDailyForecast(),
+      createForecastContainer(),
     )
   }
 
   // Info update functions
 
   function updateCurrentForecast(location, country, time, currentWeatherInfo) {
-    console.log(currentWeatherInfo)
     const updateHeadlines = () => {
       const headlineHeadings = document.querySelectorAll('.current-headlines >  h1')
       headlineHeadings[0].textContent = location
@@ -174,7 +200,8 @@ const domManager = (() => {
     updateExtras()
   }
 
-  function updateFutureForecast () {
+  function updateDailyForecast(dailyWeatherArr) {
+    console.log(dailyWeatherArr)
 
   }
 
@@ -187,6 +214,7 @@ const domManager = (() => {
   function updateForecast(newWeatherInfo) {
     console.log(newWeatherInfo)
     updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0])
+    updateDailyForecast(newWeatherInfo.forecast.slice(1))
 
   }
 
