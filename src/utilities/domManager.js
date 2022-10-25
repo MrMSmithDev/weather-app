@@ -1,13 +1,5 @@
 /* eslint-disable no-unused-vars */
 const domManager = (() => {
-  const imageLibrary = {
-    clouds: 'assets/images/cloud.jpg',
-    fog: 'assets/images/fog.jpeg',
-    rain: 'assets/images/rain.jpeg',
-    snow: 'assets/images/snow.jpg',
-    sunny: 'assets/images/sunny.jpeg',
-    storm: 'assets/images/storm.jpeg',
-  }
 
   // Utility functions
 
@@ -33,12 +25,12 @@ const domManager = (() => {
   }
 
   function retrieveWeatherImage(weatherID) {
-    if (weatherID.match(/^800/)) return imageLibrary.sunny // Change these to icon classes.
-    if (weatherID.match(/^8/)) return imageLibrary.clouds
-    if (weatherID.match(/^(3|5)/)) return imageLibrary.rain
-    if (weatherID.match(/^2/)) return imageLibrary.storm
-    if (weatherID.match(/^6/)) return imageLibrary.snow
-    return imageLibrary.fog
+    if (weatherID.match(/^800/)) return 'fa-sun' // Change these to icon classes.
+    if (weatherID.match(/^8/)) return 'fa-cloud'
+    if (weatherID.match(/^(3|5)/)) return 'fa-cloud-rain'
+    if (weatherID.match(/^2/)) return 'fa-cloud-bolt'
+    if (weatherID.match(/^6/)) return 'fa-snowflake'
+    return 'fa-smog'
   }
 
   // Information div creation
@@ -174,6 +166,12 @@ const domManager = (() => {
     )
   }
 
+  function createLoading() {
+    const background = createClassElement('div', 'loading-background')
+    const loadingIcon = createClassElement('i', 'fa-solid', 'fa-circle-notch')
+    return background.appendChildren(loadingIcon)
+  }
+
   // Info update functions
 
   function updateCurrentForecast(location, country, time, currentWeatherInfo) {
@@ -201,13 +199,21 @@ const domManager = (() => {
   }
 
   function updateDailyForecast(dailyWeatherArr) {
-    console.log(dailyWeatherArr)
+    const allCards = document.querySelectorAll('.card')
+    for (let i = 0; i < dailyWeatherArr.length; i += 1) {
+      allCards[i].querySelector('.daily-date').textContent = `${dailyWeatherArr[i].day} ${dailyWeatherArr[i].day}`
+      allCards[i].querySelector('.daily-temp').textContent = `${dailyWeatherArr[i].temp}°`
+      allCards[i].querySelector('.daily-weather').textContent = dailyWeatherArr[i].weather.weatherType
+      allCards[i].querySelector('.daily-icon i').remove()
+      allCards[i].querySelector('.daily-icon').appendChild(
+        createClassElement('i', 'fa-solid', retrieveWeatherImage(dailyWeatherArr[i].weather.weatherID)))
+    }
 
   }
 
   // Return functions
 
-  function showPage() {
+  function createPage() {
     document.body.append(createMainLayout())
   }
 
@@ -218,9 +224,19 @@ const domManager = (() => {
 
   }
 
+  function showLoading() {
+    document.querySelector('main').appendChild(createLoading())
+  }
+
+  function removeLoading() {
+    document.querySelector('.loading-background').remove()
+  }
+
   return {
-    showPage,
+    createPage,
     updateForecast,
+    showLoading,
+    removeLoading,
   }
 
 })()
