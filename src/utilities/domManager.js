@@ -183,16 +183,16 @@ const domManager = (() => {
       headlineHeadings[2].textContent = `${currentWeatherInfo.temp}°${units.temp}`
 
       const headlineParas = document.querySelectorAll('.current-headlines > p')
-      headlineParas[0].textContent = `${currentWeatherInfo.date}` // date
-      headlineParas[1].textContent = time // time
+      headlineParas[0].textContent = `${currentWeatherInfo.day} ${currentWeatherInfo.date}`
+      headlineParas[1].textContent = time
       headlineParas[2].textContent = country
     }
 
     const updateExtras = () => {
       const allDataCells = document.querySelectorAll('.extras-grid .extras-data')
-      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}${units.speed}` // wind speed
-      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°${units.temp}` // humidity
-      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°${units.temp}` // feels like
+      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}${units.speed}`
+      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°${units.temp}`
+      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°${units.temp}`
     }
 
     updateHeadlines()
