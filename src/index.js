@@ -8,9 +8,10 @@ import api from './utilities/apiManager'
 dom.showPage()
 const input = document.querySelector('input')
 
-async function showForecast() {
+async function showForecast(searchTerm) {
+  searchTerm = input.value || 'bristol' 
   try {
-    const weatherData = await api.makeLocationSearch(input.value)
+    const weatherData = await api.makeLocationSearch(searchTerm)
     input.value = ''
     dom.updateForecast(weatherData)
   } catch(err) {
@@ -19,6 +20,8 @@ async function showForecast() {
     // dom.showErrorModal()
   }
 }
+
+showForecast()
 
 const searchButton = document.querySelector('.search-container a')
 input.addEventListener('keydown', (event) => {
