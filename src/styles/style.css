@@ -37,7 +37,8 @@ main {
     gap: 10px;
     flex-direction: column;
     height: 100vh;
-    padding: 20px;
+    padding: 20px 3%;
+    /* padding: 20px 40px; */
     width: 100vw;
 }
 
@@ -74,15 +75,15 @@ main {
 }
 
 .current-headlines p {
-    font-size: 1.8rem;
+    font-size: 2.8vh;
 }
 
 .current-headlines p:nth-of-type(2) {
-    font-size: 1rem;
+    font-size: 2vh !important;
 }
 
 .current-headlines h1 {
-    font-size: 3rem;
+    font-size: 5vh;
 }
 
 .current-extras {
@@ -94,25 +95,30 @@ main {
 .current-extras .extras-grid {
     column-gap: 10px;
     display: grid;
-    grid-template-columns: 70px 1fr;
+    grid-template-columns: 1fr 70px;
 }
 
+
 .extras-grid .extras-icon {
+    display: grid;
     font-size: 3rem;
-    grid-area: 1 / 1 / 3 / 2;
-    text-align: center;
+    grid-area: 1 / 2 / 3 / 3;
+    place-items: center;
+}
+
+.extras-grid .extras-title,
+.extras-grid .extras-data {
+    font-size: 2.8vh;
+    text-align: right;
+    width: 100%
 }
 
 .extras-grid .extras-title {
-    grid-area: 1 / 2 / 2 / 3;
-    text-align: left;
-    width: 100%;
+    grid-area: 1 / 1/ 2 / 2; 
 }
 
 .extras-grid .extras-data {
-    grid-area: 2 / 2 / 2 / 3;
-    text-align: left;
-    width: 100%;
+    grid-area: 2 / 1 / 2 / 2;
 }
 
 /* Bottom forecast sections */
