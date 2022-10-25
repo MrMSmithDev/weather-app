@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import { addDays, addHours } from 'date-fns'
 
 const apiManager = (() => {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -34,9 +34,8 @@ const apiManager = (() => {
     return searchQuery
   }
 
-  function createDateArray() {
+  function createDateArray(today) {
     const dateArr = []
-    const today = new Date()
 
     for (let i = 0; i < 7; i += 1) {
       const simulatedDate =  addDays(today, i)
@@ -72,7 +71,17 @@ const apiManager = (() => {
 
   async function getWeatherData(lat, lon) {
 
-    const dateArr = createDateArray()
+    const formatTime = (dateObject) => {
+      const formattedHours = dateObject.getHours().toLocaleString('en-UK', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      })
+      const formattedMinutes = dateObject.getMinutes().toLocaleString('en-UK', {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      })
+      return `${formattedHours}:${formattedMinutes}`
+    }
 
     const weatherResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=${units}`,
@@ -85,11 +94,15 @@ const apiManager = (() => {
       {mode: 'cors'},
     )
     const timeResponseData = await timeResponse.json()
+    const timeDifference = (timeResponseData.features[0].properties.timezone.offset_STD_seconds / 60) / 60
+    const currentDateTime = addHours(new Date(), timeDifference) 
+    const currentTimeFormatted = formatTime(currentDateTime)
+    const dateArr = createDateArray(currentDateTime)
 
     return {
       location: timeResponseData.features[0].properties.city,
       country: timeResponseData.features[0].properties.country,
-      time: 'time',
+      time: currentTimeFormatted,
       forecast: [
         {
           day: days[dateArr[0].getDay()],
