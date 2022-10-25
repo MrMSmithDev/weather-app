@@ -71,12 +71,14 @@ const apiManager = (() => {
   }
 
   async function getWeatherData(lat, lon) {
+
+    const dateArr = createDateArray()
+
     const weatherResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=${units}`,
       {mode: 'cors'},
     )
     const weatherResponseData = await weatherResponse.json()
-
 
     const timeResponse = await fetch(
       `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${timeApiKey}`,
@@ -84,8 +86,6 @@ const apiManager = (() => {
     )
     const timeResponseData = await timeResponse.json()
     console.log(timeResponseData.features[0].properties)
-
-    const dateArr = createDateArray()
 
     return {
       location: timeResponseData.features[0].properties.city,
