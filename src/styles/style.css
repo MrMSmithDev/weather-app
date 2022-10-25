@@ -67,6 +67,11 @@ main {
     margin-left: 10px;
 }
 
+.search-container button {
+    background-color: transparent;
+    border: none;
+}
+
 .forecast-container {
     display: flex;
     flex-direction: column;
