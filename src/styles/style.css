@@ -31,7 +31,7 @@ body {
 }
 
 main {
-    background-color: rgba(165, 177, 187, 0.6);
+    background-color: rgba(128, 138, 146, 0.6);
     color: var(--font-color);
     display: flex;
     gap: 10px;
@@ -170,6 +170,6 @@ main {
 }
 
 .loading-background i {
-    animation: loading-animation 2s infinite;
+    animation: loading-animation 2.5s infinite;
     font-size: 5rem;
 }
