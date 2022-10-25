@@ -131,7 +131,6 @@ main {
 /* Bottom forecast sections */
 
 .daily-forecast-container {
-    background-color: red;
     width: 100%;
 }
 
@@ -142,9 +141,21 @@ main {
 }
 
 .card-stack .card {
-    background-color: green;
-    height: 40px;
     flex-grow: 1;
+    padding: 10px; 
+    width: 25%;
+}
+
+.card p {
+    font-size: 1.8rem
+}
+
+.card h1 {
+    font-size: 2.5rem
+}
+
+.card i {
+    font-size: 4rem
 }
 
 /* loading styles */
