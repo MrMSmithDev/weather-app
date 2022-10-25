@@ -5,23 +5,26 @@ import dom from './utilities/domManager'
 import api from './utilities/apiManager'
 
 
-dom.showPage()
+dom.createPage()
 const input = document.querySelector('input')
 
 async function showForecast(searchTerm) {
-  searchTerm = input.value || 'bristol' 
+  searchTerm = input.value || searchTerm
+  dom.showLoading()
   try {
     const weatherData = await api.makeLocationSearch(searchTerm)
     input.value = ''
     dom.updateForecast(weatherData)
   } catch(err) {
     console.log(err)
-    // dom.removeMain()
     // dom.showErrorModal()
+  }
+  finally {
+    dom.removeLoading()
   }
 }
 
-showForecast()
+showForecast('London')
 
 const searchButton = document.querySelector('.search-container a')
 input.addEventListener('keydown', (event) => {
@@ -30,6 +33,12 @@ input.addEventListener('keydown', (event) => {
   }
 })
 searchButton.addEventListener('click', showForecast)
+
+const unitButton = document.querySelector('.unit-container button')
+unitButton.addEventListener('click', () => {
+  api.changeApiUnits()
+  showForecast(document.querySelector('.current-headlines h1').textContent)
+})
 
 // const searchBar = document.querySelector('#nav-location-input')
 // const navSearchButton = document.querySelector('nav .search-button')
