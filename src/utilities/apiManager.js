@@ -85,7 +85,6 @@ const apiManager = (() => {
       {mode: 'cors'},
     )
     const timeResponseData = await timeResponse.json()
-    console.log(timeResponseData.features[0].properties)
 
     return {
       location: timeResponseData.features[0].properties.city,
@@ -97,7 +96,7 @@ const apiManager = (() => {
           date: `${[dateArr[0].getDate()]} ${months[dateArr[0].getMonth()]}`,
           temp: Math.floor(weatherResponseData.list[0].main.temp),
           weather: {
-            weatherID: weatherResponseData.list[0].weather[0].id,
+            weatherID: weatherResponseData.list[0].weather[0].id.toString(),
             weatherType: weatherResponseData.list[0].weather[0].description
           },
           humidity: weatherResponseData.list[0].main.humidity,
@@ -109,7 +108,7 @@ const apiManager = (() => {
           date: `${dateArr[1].getDate()} ${months[dateArr[1].getMonth()]}`,
           temp: Math.floor(weatherResponseData.list[8].main.temp),
           weather: {
-            weatherID: weatherResponseData.list[8].weather[0].id,
+            weatherID: weatherResponseData.list[8].weather[0].id.toString(),
             weatherType: weatherResponseData.list[8].weather[0].description
           },
           humidity: weatherResponseData.list[8].main.humidity,
@@ -121,7 +120,7 @@ const apiManager = (() => {
           date: `${dateArr[2].getDate()} ${months[dateArr[2].getMonth()]}`,
           temp: Math.floor(weatherResponseData.list[16].main.temp),
           weather: {
-            weatherID: weatherResponseData.list[16].weather[0].id,
+            weatherID: weatherResponseData.list[16].weather[0].id.toString(),
             weatherType: weatherResponseData.list[16].weather[0].description
           },
           humidity: weatherResponseData.list[16].main.humidity,
@@ -133,7 +132,7 @@ const apiManager = (() => {
           date: `${dateArr[3].getDate()} ${months[dateArr[3].getMonth()]}`,
           temp: Math.floor(weatherResponseData.list[24].main.temp),
           weather: {
-            weatherID: weatherResponseData.list[24].weather[0].id,
+            weatherID: weatherResponseData.list[24].weather[0].id.toString(),
             weatherType: weatherResponseData.list[24].weather[0].description
           },
           humidity: weatherResponseData.list[24].main.humidity,
@@ -145,7 +144,7 @@ const apiManager = (() => {
           date: `${dateArr[4].getDate()} ${months[dateArr[4].getMonth()]}`,
           temp: Math.floor(weatherResponseData.list[32].main.temp),
           weather: {
-            weatherID: weatherResponseData.list[32].weather[0].id,
+            weatherID: weatherResponseData.list[32].weather[0].id.toString(),
             weatherType: weatherResponseData.list[32].weather[0].description
           },
           humidity: weatherResponseData.list[32].main.humidity,
@@ -171,7 +170,16 @@ const apiManager = (() => {
   }
 
   function getCurrentUnits() {
-    return units
+    if (units === 'metric') {
+      return {
+        temperature: 'C',
+        speed: 'm/s'
+      }
+    }
+    return {
+      temperature: 'F',
+      speed: 'mph'
+    }
   }
 
   function changeApiUnits() {
