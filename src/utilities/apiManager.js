@@ -172,12 +172,12 @@ const apiManager = (() => {
   function getCurrentUnits() {
     if (units === 'metric') {
       return {
-        temperature: 'C',
+        temp: 'C',
         speed: 'm/s'
       }
     }
     return {
-      temperature: 'F',
+      temp: 'F',
       speed: 'mph'
     }
   }
