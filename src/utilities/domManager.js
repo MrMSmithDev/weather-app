@@ -113,7 +113,7 @@ const domManager = (() => {
 
   function createUnitButton() {
     const unitContainer = createClassElement('div', 'unit-container')
-    const unitButton = createTextElement('button', 'Metric')
+    const unitButton = createTextElement('button', 'METRIC')
     return unitContainer.appendChildren(unitButton)
   }
 
@@ -181,36 +181,36 @@ const domManager = (() => {
 
   // Info update functions
 
-  function updateCurrentForecast(location, country, time, currentWeatherInfo) {
+  function updateCurrentForecast(location, country, time, currentWeatherInfo, units) {
     const updateHeadlines = () => {
       const headlineHeadings = document.querySelectorAll('.current-headlines >  h1')
       headlineHeadings[0].textContent = location
       headlineHeadings[1].textContent = currentWeatherInfo.weather.weatherType
-      headlineHeadings[2].textContent = `${currentWeatherInfo.temp}°`
+      headlineHeadings[2].textContent = `${currentWeatherInfo.temp}°${units.temp}`
 
       const headlineParas = document.querySelectorAll('.current-headlines > p')
       headlineParas[0].textContent = `${currentWeatherInfo.date}` // date
       headlineParas[1].textContent = time // time
-      headlineParas[2].textContent = country   // weather
+      headlineParas[2].textContent = country
     }
 
     const updateExtras = () => {
       const allDataCells = document.querySelectorAll('.extras-grid .extras-data')
-      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}mph` // wind speed
-      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°` // humidity
-      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°` // feels like
+      allDataCells[0].textContent = `${currentWeatherInfo.windSpeed}${units.speed}` // wind speed
+      allDataCells[1].textContent = `${currentWeatherInfo.humidity}°${units.temp}` // humidity
+      allDataCells[2].textContent = `${currentWeatherInfo.feelsLike}°${units.temp}` // feels like
     }
 
     updateHeadlines()
     updateExtras()
   }
 
-  function updateDailyForecast(dailyWeatherArr) {
+  function updateDailyForecast(dailyWeatherArr, units) {
     const allCards = document.querySelectorAll('.card')
     let i = 0
     dailyWeatherArr.forEach((weatherArr )=> {
       allCards[i].querySelector('.daily-date').textContent = `${weatherArr.day} ${weatherArr.date}`
-      allCards[i].querySelector('.daily-temp').textContent = `${weatherArr.temp}°`
+      allCards[i].querySelector('.daily-temp').textContent = `${weatherArr.temp}°${units.temp}`
       allCards[i].querySelector('.daily-weather').textContent = weatherArr.weather.weatherType
       if (allCards[i].querySelector('.daily-icon i')) allCards[i].querySelector('.daily-icon i').remove()
       const weatherIcon = createClassElement('i', 'fa-solid', retrieveWeatherIcon(weatherArr.weather.weatherID))
@@ -225,10 +225,9 @@ const domManager = (() => {
     document.body.append(createMainLayout())
   }
 
-  function updateForecast(newWeatherInfo) {
-    updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0])
-    updateDailyForecast(newWeatherInfo.forecast.slice(1))
-
+  function updateForecast(newWeatherInfo, unitObject) {
+    updateCurrentForecast(newWeatherInfo.location, newWeatherInfo.country, newWeatherInfo.time, newWeatherInfo.forecast[0], unitObject)
+    updateDailyForecast(newWeatherInfo.forecast.slice(1), unitObject)
   }
 
   function showLoading() {
