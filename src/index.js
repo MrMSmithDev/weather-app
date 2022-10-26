@@ -8,6 +8,11 @@ import api from './utilities/apiManager'
 dom.createPage()
 const input = document.querySelector('input')
 
+function addModalListener() {
+  const button = document.querySelector('.modal-background button')
+  button.addEventListener('click', dom.removeModal)
+}
+
 async function showForecast(searchTerm) {
   searchTerm = input.value || searchTerm
   dom.showLoading()
@@ -17,7 +22,8 @@ async function showForecast(searchTerm) {
     dom.updateForecast(weatherData, api.getCurrentUnits())
   } catch(err) {
     console.log(err)
-    // dom.showErrorModal()
+    dom.showModal()
+    addModalListener()
   }
   finally {
     dom.removeLoading()
