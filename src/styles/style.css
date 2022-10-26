@@ -72,7 +72,8 @@ main {
     place-items: center;
 }
 
-.unit-container button {
+.unit-container button,
+.modal-background button {
     background-color: transparent;
     border: none;
     font-family: 'lack', sans-serif;
@@ -114,13 +115,6 @@ main {
     column-gap: 10px;
     display: grid;
     grid-template-columns: 1fr 70px;
-}
-
-.extras-grid .extras-icon {
-    display: grid;
-    font-size: 3rem;
-    grid-area: 1 / 2 / 3 / 3;
-    place-items: center;
 }
 
 .extras-grid .extras-title,
@@ -182,12 +176,16 @@ main {
     }
 }
 
-.loading-background {
+.loading-background,
+.modal-background {
+    align-items: center;
     background-color: rgba(165, 177, 187, 0.6);
     bottom: 0;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     left: 0;
-    place-items: center;
+    justify-content: center;
     position: absolute;
     right: 0;
     top: 0;
@@ -196,4 +194,14 @@ main {
 .loading-background i {
     animation: loading-animation 2.5s infinite;
     font-size: 5rem;
+}
+
+.modal-background p {
+    font-size: 2.8vh;
+}
+
+.modal-background button {
+    border: 2px solid #ffffff;
+    border-radius: 3px;
+    padding: 3px 6px;
 }
