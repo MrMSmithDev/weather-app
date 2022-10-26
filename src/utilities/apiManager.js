@@ -171,14 +171,8 @@ const apiManager = (() => {
   // Return functions
 
   async function makeLocationSearch(location) {
-    let weatherData
-    try {
-      const locationData = await getLocationData(location)
-      weatherData = await getWeatherData(locationData.lat, locationData.lon)
-    } catch(err) {
-      console.log(err)
-      weatherData = false
-    }
+    const locationData = await getLocationData(location)
+    const weatherData = await getWeatherData(locationData.lat, locationData.lon)
     return weatherData
   }
 
