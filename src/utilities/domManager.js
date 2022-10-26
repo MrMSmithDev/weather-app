@@ -173,6 +173,15 @@ const domManager = (() => {
     return background.appendChildren(loadingIcon)
   }
 
+  function createModal() {
+    const background = createClassElement('div', 'modal-background')
+    const modal = createClassElement('div', 'modal-background')
+    const modalText = createTextElement('p', 'That location could not be found')
+    const modalButton = createTextElement('button', 'OK')
+    modal.appendChildren(modalText, modalButton)
+    return background.appendChildren(modal)
+  }
+
   // Info update functions
 
   function updateCurrentForecast(location, country, time, currentWeatherInfo, units) {
@@ -229,8 +238,16 @@ const domManager = (() => {
     document.querySelector('main').appendChild(createLoading())
   }
 
+  function showModal() {
+    document.querySelector('main').appendChild(createModal())
+  }
+
   function removeLoading() {
     document.querySelector('.loading-background').remove()
+  }
+
+  function removeModal() {
+    document.querySelector('.modal-background').remove()
   }
 
   return {
@@ -238,6 +255,8 @@ const domManager = (() => {
     updateForecast,
     showLoading,
     removeLoading,
+    showModal,
+    removeModal,
   }
 
 })()
