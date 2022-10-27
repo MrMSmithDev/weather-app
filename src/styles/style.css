@@ -67,12 +67,14 @@ main {
     margin-left: 10px;
 }
 
-.unit-container {
-    display: grid;
-    place-items: center;
+.button-container {
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
 }
 
-.unit-container button,
+.button-container button,
 .modal-background button {
     background-color: transparent;
     border: none;
