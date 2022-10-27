@@ -83,26 +83,25 @@ const apiManager = (() => {
       return `${formattedHours}:${formattedMinutes}`
     }
 
-    const weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=${units}`,
-      {mode: 'cors'},
-    )
-    const weatherResponseData = await weatherResponse.json()
+    const responses = await Promise.all([
+      fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=${units}`,
+        {mode: 'cors'}),
+      fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${timeApiKey}`,
+        {mode: 'cors'})
+    ])
+    const responseData = await Promise.all(responses.map((response) => response.json()))
+    const weatherResponseData = responseData[0]
+    const timeResponseData = responseData[1]
 
-    const timeResponse = await fetch(
-      `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${timeApiKey}`,
-      {mode: 'cors'},
-    )
-    const timeResponseData = await timeResponse.json()
     const timeDifference = (timeResponseData.features[0].properties.timezone.offset_STD_seconds / 60) / 60
     const currentDateTime = addHours(new Date(), timeDifference) 
-    const currentTimeFormatted = formatTime(currentDateTime)
+
     const dateArr = createDateArray(currentDateTime)
 
     return {
       location: timeResponseData.features[0].properties.city,
       country: timeResponseData.features[0].properties.country,
-      time: currentTimeFormatted,
+      time: formatTime(currentDateTime),
       forecast: [
         {
           day: days[dateArr[0].getDay()],
