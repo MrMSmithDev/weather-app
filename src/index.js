@@ -36,6 +36,7 @@ const searchButton = document.querySelector('.search-container a')
 input.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     showForecast()
+    input.blur()
   }
 })
 searchButton.addEventListener('click', showForecast)
