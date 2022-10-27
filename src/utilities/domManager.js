@@ -105,10 +105,11 @@ const domManager = (() => {
     return searchContainer.appendChildren(searchInput, searchButton)
   }
 
-  function createUnitButton() {
-    const unitContainer = createClassElement('div', 'unit-container')
+  function createButtonContainer() {
+    const unitContainer = createClassElement('div', 'button-container')
     const unitButton = createTextElement('button', 'METRIC')
-    return unitContainer.appendChildren(unitButton)
+    const homeButton = createTextElement('button', 'SET AS HOME')
+    return unitContainer.appendChildren(unitButton, homeButton)
   }
 
   function createCurrentForecast() {
@@ -162,7 +163,7 @@ const domManager = (() => {
     const main = document.createElement('main')
     return main.appendChildren(
       createSearchBar(),
-      createUnitButton(),
+      createButtonContainer(),
       createForecastContainer(),
     )
   }
