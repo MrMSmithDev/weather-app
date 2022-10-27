@@ -3,7 +3,9 @@ import './assets/fontawesome-css/css/fontawesome.css'
 import './assets/fontawesome-css/css/solid.css'
 import dom from './utilities/domManager'
 import api from './utilities/apiManager'
+import storage from './utilities/storageManager'
 
+const homeLocation = storage.getHome()
 
 dom.createPage()
 const input = document.querySelector('input')
@@ -30,7 +32,7 @@ async function showForecast(searchTerm) {
   }
 }
 
-showForecast('London')
+showForecast(homeLocation)
 
 const searchButton = document.querySelector('.search-container a')
 input.addEventListener('keydown', (event) => {
@@ -41,8 +43,13 @@ input.addEventListener('keydown', (event) => {
 })
 searchButton.addEventListener('click', showForecast)
 
-const unitButton = document.querySelector('.unit-container button')
+const unitButton = document.querySelector('.button-container button')
 unitButton.addEventListener('click', () => {
   unitButton.textContent = api.changeApiUnits().toUpperCase()
   showForecast(document.querySelector('.current-headlines h1').textContent)
+})
+
+const homeButton = document.querySelector('.button-container button:last-of-type')
+homeButton.addEventListener('click', () => {
+  storage.setHome(document.querySelector('.current-headlines h1').textContent)
 })
