@@ -114,7 +114,7 @@ main {
 .current-extras .extras-grid {
     column-gap: 10px;
     display: grid;
-    grid-template-columns: 1fr 70px;
+    grid-template-columns: 1fr auto;
 }
 
 .extras-grid .extras-title,
@@ -131,6 +131,10 @@ main {
 
 .extras-grid .extras-data {
     grid-area: 2 / 1 / 2 / 2;
+}
+
+.extras-grid .extras-icon {
+    font-size: 3vh;
 }
 
 /* Bottom forecast sections */
