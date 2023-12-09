@@ -176,16 +176,7 @@ const apiManager = (() => {
   }
 
   function getCurrentUnits() {
-    if (units === 'metric') {
-      return {
-        temp: 'C',
-        speed: 'm/s'
-      }
-    }
-    return {
-      temp: 'F',
-      speed: 'mph'
-    }
+    return units === 'metric' ? { temp: 'C', speed: 'm/s' } : { temp: 'F', speed: 'mph' }
   }
 
   function changeApiUnits() {
