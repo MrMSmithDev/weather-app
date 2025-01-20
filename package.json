@@ -230,13 +230,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MBright90/weather-app.git"
+    "url": "git+https://github.com/MrMSmithDev/weather-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MBright90/weather-app/issues"
+    "url": "https://github.com/MrMSmithDev/weather-app/issues"
   },
-  "homepage": "https://github.com/MBright90/weather-app#readme"
+  "homepage": "https://github.com/MrMSmithDev/weather-app#readme"
 }
